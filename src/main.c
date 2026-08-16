@@ -145,7 +145,7 @@ static int run_repl(void) {
             while (*t == ' ' || *t == '\t') t++;
             if (strcmp(t, "exit") == 0 || strcmp(t, "quit") == 0) { free(line); break; }
             if (strcmp(t, "help") == 0) {
-                printf("\n  say \"hello\"          print something\n"
+                printf("\n  say \"hello\"           print something\n"
                        "  x = 5                 remember a value\n"
                        "  if x > 3:             start a block (blank line ends it)\n"
                        "  fun add(a, b):        define a function\n"

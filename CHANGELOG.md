@@ -4,6 +4,13 @@ All notable changes to Chopcap are recorded here.
 This project follows [Semantic Versioning](https://semver.org/). While the
 major version is `0`, the syntax may still change between minor releases.
 
+## [Unreleased]
+
+### Fixed
+
+- The columns in the interactive prompt's `help` reminder were out by one
+  space on the first row.
+
 ## [0.1.0] — 2026-08-16
 
 The first release of Chopcap. Everything below is new.
