@@ -20,7 +20,7 @@ static const char *USAGE =
 "  -h, --help                  show this help\n"
 "  -v, --version               show the version\n"
 "\n"
-"Learn more:  https://chopcap.netlify.app\n";
+"Learn more:  https://github.com/ilikemacos/chopcap\n";
 
 static void set_basedir(Interp *in, const char *path) {
     char *copy = xstrdup(path);
