@@ -44,7 +44,7 @@
       </a>
 <a class="card" href="#ex-guess">
         <h3><code>guess.chop</code></h3>
-        <p>A guessing game.  Answers are read from the keyboard, so run it with:</p>
+        <p>A guessing game that reads your guesses from the keyboard.</p>
       </a>
 <a class="card" href="#ex-hello">
         <h3><code>hello.chop</code></h3>
@@ -78,6 +78,7 @@
       <p class="lede">Count to 20, but say Fizz, Buzz or FizzBuzz instead of some numbers.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/fizzbuzz.chop" rel="noopener">View on GitHub</a></p>
       
+      
       <div class="pane" data-runner data-filename="fizzbuzz.chop" data-autorun="no">
         <div class="pane-bar">
           <span class="dots"><i></i><i></i><i></i></span>
@@ -105,6 +106,7 @@ for i in 1 to 20:
       <h2>greeting.chop</h2>
       <p class="lede">Ask a question, then use the answer.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/greeting.chop" rel="noopener">View on GitHub</a></p>
+      
       <p class="pg-label">This one asks questions. The answers used below are:
         <code>Ada</code></p>
       <textarea class="pg-inputs" id="ex-greeting-inputs" hidden>Ada</textarea>
@@ -129,8 +131,9 @@ say &quot;Your name has&quot;, len(name), &quot;letters.&quot;</textarea>
 <section id="ex-guess">
     <div class="wrap">
       <h2>guess.chop</h2>
-      <p class="lede">A guessing game.  Answers are read from the keyboard, so run it with:
+      <p class="lede">A guessing game that reads your guesses from the keyboard.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/guess.chop" rel="noopener">View on GitHub</a></p>
+      
       <p class="pg-label">This one asks questions. The answers used below are:
         <code>50, 25, 37, 43, 40, 41, 42</code></p>
       <textarea class="pg-inputs" id="ex-guess-inputs" hidden>50
@@ -146,8 +149,8 @@ say &quot;Your name has&quot;, len(name), &quot;letters.&quot;</textarea>
           <span>guess.chop</span>
           <button class="run" type="button">Run</button>
         </div>
-        <textarea class="editor" spellcheck="false" rows="30"># A guessing game.  Answers are read from the keyboard, so run it with:
-#   chopcap guess.chop
+        <textarea class="editor" spellcheck="false" rows="30"># A guessing game that reads your guesses from the keyboard.
+# Run it in a terminal with: chopcap guess.chop
 use random
 
 random.seed(whole(random.decimal() * 100000))
@@ -190,6 +193,7 @@ if tries == 7:
       <p class="lede">The traditional first program.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/hello.chop" rel="noopener">View on GitHub</a></p>
       
+      
       <div class="pane" data-runner data-filename="hello.chop" data-autorun="no">
         <div class="pane-bar">
           <span class="dots"><i></i><i></i><i></i></span>
@@ -207,6 +211,7 @@ say &quot;Hello, world!&quot;</textarea>
       <h2>notes.chop</h2>
       <p class="lede">Read and write files.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/notes.chop" rel="noopener">View on GitHub</a></p>
+      <p class="pg-label">This one uses the <code>files</code> module, which a browser cannot provide — run it with the <code>chopcap</code> command to see it work.</p>
       
       <div class="pane" data-runner data-filename="notes.chop" data-autorun="no">
         <div class="pane-bar">
@@ -240,6 +245,7 @@ say &quot;File still there?&quot;, files.exists(path)</textarea>
       <h2>primes.chop</h2>
       <p class="lede">Find the prime numbers below 60.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/primes.chop" rel="noopener">View on GitHub</a></p>
+      
       
       <div class="pane" data-runner data-filename="primes.chop" data-autorun="no">
         <div class="pane-bar">
@@ -276,6 +282,7 @@ say &quot;There are&quot;, len(found), &quot;of them.&quot;</textarea>
       <p class="lede">Working with lists.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/shopping.chop" rel="noopener">View on GitHub</a></p>
       
+      
       <div class="pane" data-runner data-filename="shopping.chop" data-autorun="no">
         <div class="pane-bar">
           <span class="dots"><i></i><i></i><i></i></span>
@@ -309,6 +316,7 @@ say &quot;Removed&quot;, removed, &quot;-&gt;&quot;, basket</textarea>
       <p class="lede">Convert temperatures and print a small table.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/temperature.chop" rel="noopener">View on GitHub</a></p>
       
+      
       <div class="pane" data-runner data-filename="temperature.chop" data-autorun="no">
         <div class="pane-bar">
           <span class="dots"><i></i><i></i><i></i></span>
@@ -340,6 +348,7 @@ say &quot;98.6F is&quot;, math.round(to_celsius(98.6), 1), &quot;degrees Celsius
       <h2>words.chop</h2>
       <p class="lede">Count the words in a piece of text.
         <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/words.chop" rel="noopener">View on GitHub</a></p>
+      
       
       <div class="pane" data-runner data-filename="words.chop" data-autorun="no">
         <div class="pane-bar">

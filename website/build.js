@@ -389,6 +389,7 @@ function buildExamples() {
       <h2>${escapeHtml(file)}</h2>
       <p class="lede">${escapeHtml(firstComment)}
         <a href="${REPO}/blob/main/examples/${file}" rel="noopener">View on GitHub</a></p>
+      ${/use files/.test(source) ? '<p class="pg-label">This one uses the <code>files</code> module, which a browser cannot provide — run it with the <code>chopcap</code> command to see it work.</p>' : ''}
       ${answers.length ? `<p class="pg-label">This one asks questions. The answers used below are:
         <code>${escapeHtml(answers.join(', '))}</code></p>
       <textarea class="pg-inputs" id="${id}-inputs" hidden>${escapeHtml(answers.join('\n'))}</textarea>` : ''}

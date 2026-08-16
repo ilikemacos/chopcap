@@ -1,5 +1,5 @@
-# A guessing game.  Answers are read from the keyboard, so run it with:
-#   chopcap guess.chop
+# A guessing game that reads your guesses from the keyboard.
+# Run it in a terminal with: chopcap guess.chop
 use random
 
 random.seed(whole(random.decimal() * 100000))
