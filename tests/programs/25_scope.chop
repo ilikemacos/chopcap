@@ -1,0 +1,15 @@
+total = 0
+
+fun bump(amount):
+    total = total + amount
+    return total
+
+say bump(2)
+say bump(3)
+say total
+
+fun shadow(total):
+    total = 100
+    return total
+
+say shadow(1), total

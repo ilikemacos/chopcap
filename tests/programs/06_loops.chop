@@ -1,0 +1,30 @@
+i = 0
+while i < 3:
+    say "while", i
+    i = i + 1
+
+for n in [10, 20, 30]:
+    say "for", n
+
+for i in 1 to 5:
+    say "count", i
+
+for i in 3 to 1 by -1:
+    say "down", i
+
+for i in 1 to 10:
+    if i == 4:
+        break
+    if i % 2 == 0:
+        skip
+    say "odd", i
+
+for letter in "abc":
+    say letter
+
+for i in 0 to 10 by 5:
+    say "step", i
+
+for i in 5 to 1:
+    say "never runs"
+say "an empty range is fine"

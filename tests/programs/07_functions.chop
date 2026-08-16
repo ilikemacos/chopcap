@@ -1,0 +1,35 @@
+fun add(a, b):
+    return a + b
+
+say add(5, 7)
+
+fun greet(name):
+    say "Hello, " + name + "!"
+
+greet("Ada")
+say greet("Bob")
+
+fun fact(n):
+    if n <= 1:
+        return 1
+    return n * fact(n - 1)
+
+say fact(6)
+
+fun make_counter():
+    count = 0
+    fun step():
+        count = count + 1
+        return count
+    return step
+
+next = make_counter()
+say next(), next(), next()
+
+fun apply(f, v):
+    return f(v)
+
+fun double(n):
+    return n * 2
+
+say apply(double, 21)

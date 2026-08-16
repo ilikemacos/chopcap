@@ -1,0 +1,8 @@
+
+Chopcap Error
+
+  19_err_index.chop, line 2:
+    say things[7]
+
+  position 7 is outside this list of length 3.
+  Valid positions run from 0 to the length minus one.

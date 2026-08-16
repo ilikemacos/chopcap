@@ -1,0 +1,22 @@
+# Count the words in a piece of text.
+use text
+use lists
+
+passage = "the quick brown fox jumps over the lazy dog the end"
+words = text.split(passage)
+
+say "Words:", len(words)
+
+seen = []
+counts = []
+for w in words:
+    at = lists.find(seen, w)
+    if at == -1:
+        push(seen, w)
+        push(counts, 1)
+    else:
+        counts[at] = counts[at] + 1
+
+for i in 0 to len(seen) - 1:
+    if counts[i] > 1:
+        say seen[i], "appears", counts[i], "times"

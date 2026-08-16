@@ -1,0 +1,8 @@
+
+Chopcap Error
+
+  22_err_module.chop, line 1:
+    use sockets
+
+  there is no module called `sockets`.
+  Chopcap comes with: math, text, lists, random, files, time.

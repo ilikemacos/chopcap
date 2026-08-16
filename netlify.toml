@@ -1,0 +1,48 @@
+# Netlify configuration for the Chopcap website.
+#
+# The site is a handful of static files generated from the repository itself,
+# so the build is a single node script with no dependencies to install.
+
+[build]
+  command = "node website/build.js"
+  publish = "website"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# The installer must be served as a script, not downloaded as a file, so that
+#   curl -fsSL https://<site>/install.sh | sh
+# works.
+[[headers]]
+  for = "/install.sh"
+  [headers.values]
+    Content-Type = "text/x-shellscript; charset=utf-8"
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Friendly URLs: /docs and /playground work as well as /docs.html
+[[redirects]]
+  from = "/docs"
+  to = "/docs.html"
+  status = 200
+
+[[redirects]]
+  from = "/examples"
+  to = "/examples.html"
+  status = 200
+
+[[redirects]]
+  from = "/playground"
+  to = "/playground.html"
+  status = 200

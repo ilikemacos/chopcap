@@ -1,0 +1,21 @@
+x = 7
+if x > 10:
+    say "big"
+else if x > 5:
+    say "medium"
+else:
+    say "small"
+
+if x == 7 and true:
+    say "seven"
+
+if not false:
+    say "not false"
+
+if "":
+    say "never"
+else:
+    say "empty text is false"
+
+if [1]:
+    say "a list with something in it is true"

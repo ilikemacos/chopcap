@@ -1,0 +1,5 @@
+say type(1), type(1.5), type("a"), type(true), type([1]), type(nothing)
+say text(42), text(true), text([1, 2])
+say number("42"), number("3.5"), number(true)
+say whole(3.9), whole(-3.9), whole("7")
+say len("abc"), len([1, 2])

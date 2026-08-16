@@ -1,0 +1,10 @@
+# A small module loaded by 16_use_file.chop
+use text
+
+greeting = "hello from helpers"
+
+fun double(n):
+    return n * 2
+
+fun shout(s):
+    return text.upper(s) + "!"

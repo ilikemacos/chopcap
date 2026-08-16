@@ -1,0 +1,5 @@
+# a whole-line comment
+x = 1  # a trailing comment
+# say "this never runs"
+say x  # and here
+say "# not a comment"

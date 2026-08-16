@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Build and test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-14 is Apple Silicon, macos-13 is Intel.
+        os: [macos-14, macos-13]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show the toolchain
+        run: cc --version && uname -m
+
+      - name: Build
+        run: make
+
+      - name: Run the test suite
+        run: make test
+
+      - name: Check the CLI
+        run: |
+          ./build/chopcap --version
+          ./build/chopcap --help
+          ./build/chopcap -e 'say "hello from CI"'
+          ./build/chopcap examples/fizzbuzz.chop | tail -1
+          echo 'say 6 * 7' | ./build/chopcap
+
+      - name: Build a universal binary
+        run: |
+          make universal
+          lipo -info build/universal/chopcap
+          ./build/universal/chopcap --version
+
+  shellcheck:
+    name: Lint install.sh
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the installer parses as POSIX sh
+        run: sh -n install.sh

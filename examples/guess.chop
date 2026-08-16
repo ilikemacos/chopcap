@@ -1,0 +1,34 @@
+# A guessing game.  Answers are read from the keyboard, so run it with:
+#   chopcap guess.chop
+use random
+
+random.seed(whole(random.decimal() * 100000))
+secret = random.number(1, 100)
+tries = 0
+
+say "I am thinking of a number between 1 and 100."
+
+while tries < 7:
+    reply = ask "Your guess? "
+    if reply == nothing:
+        say ""
+        say "Goodbye!"
+        break
+
+    try:
+        guess = whole(reply)
+    catch problem:
+        say "That was not a number. Try again."
+        skip
+
+    tries = tries + 1
+    if guess == secret:
+        say "Correct! It took you", tries, "tries."
+        break
+    else if guess < secret:
+        say "Higher."
+    else:
+        say "Lower."
+
+if tries == 7:
+    say "Out of tries. The number was", secret

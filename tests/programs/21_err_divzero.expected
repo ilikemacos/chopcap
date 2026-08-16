@@ -1,0 +1,8 @@
+
+Chopcap Error
+
+  21_err_divzero.chop, line 3:
+    say top / bottom
+
+  cannot divide by zero.
+  Check the value on the right of the `/`.

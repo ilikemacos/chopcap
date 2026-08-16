@@ -1,0 +1,17 @@
+# Working with lists.
+use lists
+
+basket = ["bread", "milk", "apples"]
+
+say "Shopping list:"
+for i in 0 to len(basket) - 1:
+    say "  " + text(i + 1) + ". " + basket[i]
+
+push(basket, "coffee")
+say ""
+say "After adding coffee:", basket
+say "In alphabetical order:", lists.sort(basket)
+say "Do we need milk?", lists.contains(basket, "milk")
+
+removed = lists.remove(basket, 0)
+say "Removed", removed, "->", basket

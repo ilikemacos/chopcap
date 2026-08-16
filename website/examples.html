@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Examples — Chopcap</title>
+<meta name="description" content="Nine complete Chopcap programs you can read, edit and run in the browser.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Examples — Chopcap">
+<meta property="og:description" content="Nine complete Chopcap programs you can read, edit and run in the browser.">
+<meta property="og:type" content="website">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-45 32 32)"><rect x="25" y="1" width="14" height="28" rx="7" fill="var(--logo-accent)"/><rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink)"/></g></svg><span>Chopcap</span><span class="version">0.1.0</span></a>
+    <nav class="site-nav">
+        <a href="/docs.html">Docs</a>
+        <a href="/examples.html" aria-current="page" data-optional>Examples</a>
+        <a href="/playground.html">Playground</a>
+        <a href="https://github.com/ilikemacos/chopcap" rel="noopener" data-optional>GitHub</a>
+        <button class="theme-toggle" type="button">☾</button>
+      </nav>
+  </div>
+</header>
+
+<main>
+  <section style="border-top:none">
+    <div class="wrap">
+      <h2>Example programs</h2>
+      <p class="lede">Every program here is a real file in the repository, run by the test
+      suite on every change. You can edit and run any of them right on this page — the
+      playground uses a JavaScript build of Chopcap that is checked against the same tests
+      as the <code>chopcap</code> command.</p>
+      <div class="cards"><a class="card" href="#ex-fizzbuzz">
+        <h3><code>fizzbuzz.chop</code></h3>
+        <p>Count to 20, but say Fizz, Buzz or FizzBuzz instead of some numbers.</p>
+      </a>
+<a class="card" href="#ex-greeting">
+        <h3><code>greeting.chop</code></h3>
+        <p>Ask a question, then use the answer.</p>
+      </a>
+<a class="card" href="#ex-guess">
+        <h3><code>guess.chop</code></h3>
+        <p>A guessing game.  Answers are read from the keyboard, so run it with:</p>
+      </a>
+<a class="card" href="#ex-hello">
+        <h3><code>hello.chop</code></h3>
+        <p>The traditional first program.</p>
+      </a>
+<a class="card" href="#ex-notes">
+        <h3><code>notes.chop</code></h3>
+        <p>Read and write files.</p>
+      </a>
+<a class="card" href="#ex-primes">
+        <h3><code>primes.chop</code></h3>
+        <p>Find the prime numbers below 60.</p>
+      </a>
+<a class="card" href="#ex-shopping">
+        <h3><code>shopping.chop</code></h3>
+        <p>Working with lists.</p>
+      </a>
+<a class="card" href="#ex-temperature">
+        <h3><code>temperature.chop</code></h3>
+        <p>Convert temperatures and print a small table.</p>
+      </a>
+<a class="card" href="#ex-words">
+        <h3><code>words.chop</code></h3>
+        <p>Count the words in a piece of text.</p>
+      </a></div>
+    </div>
+  </section>
+  <section id="ex-fizzbuzz">
+    <div class="wrap">
+      <h2>fizzbuzz.chop</h2>
+      <p class="lede">Count to 20, but say Fizz, Buzz or FizzBuzz instead of some numbers.
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/fizzbuzz.chop" rel="noopener">View on GitHub</a></p>
+      
+      <div class="pane" data-runner data-filename="fizzbuzz.chop" data-autorun="no">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>fizzbuzz.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="14"># Count to 20, but say Fizz, Buzz or FizzBuzz instead of some numbers.
+fun label(n):
+    if n % 15 == 0:
+        return &quot;FizzBuzz&quot;
+    if n % 3 == 0:
+        return &quot;Fizz&quot;
+    if n % 5 == 0:
+        return &quot;Buzz&quot;
+    return text(n)
+
+for i in 1 to 20:
+    say label(i)</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+<section id="ex-greeting">
+    <div class="wrap">
+      <h2>greeting.chop</h2>
+      <p class="lede">Ask a question, then use the answer.
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/greeting.chop" rel="noopener">View on GitHub</a></p>
+      <p class="pg-label">This one asks questions. The answers used below are:
+        <code>Ada</code></p>
+      <textarea class="pg-inputs" id="ex-greeting-inputs" hidden>Ada</textarea>
+      <div class="pane" data-runner data-filename="greeting.chop" data-autorun="no" data-inputs="#ex-greeting-inputs">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>greeting.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="10"># Ask a question, then use the answer.
+name = ask &quot;What is your name? &quot;
+
+if name == nothing or name == &quot;&quot;:
+    name = &quot;stranger&quot;
+
+say &quot;Hello, &quot; + name + &quot;!&quot;
+say &quot;Your name has&quot;, len(name), &quot;letters.&quot;</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+<section id="ex-guess">
+    <div class="wrap">
+      <h2>guess.chop</h2>
+      <p class="lede">A guessing game.  Answers are read from the keyboard, so run it with:
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/guess.chop" rel="noopener">View on GitHub</a></p>
+      <p class="pg-label">This one asks questions. The answers used below are:
+        <code>50, 25, 37, 43, 40, 41, 42</code></p>
+      <textarea class="pg-inputs" id="ex-guess-inputs" hidden>50
+25
+37
+43
+40
+41
+42</textarea>
+      <div class="pane" data-runner data-filename="guess.chop" data-autorun="no" data-inputs="#ex-guess-inputs">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>guess.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="30"># A guessing game.  Answers are read from the keyboard, so run it with:
+#   chopcap guess.chop
+use random
+
+random.seed(whole(random.decimal() * 100000))
+secret = random.number(1, 100)
+tries = 0
+
+say &quot;I am thinking of a number between 1 and 100.&quot;
+
+while tries &lt; 7:
+    reply = ask &quot;Your guess? &quot;
+    if reply == nothing:
+        say &quot;&quot;
+        say &quot;Goodbye!&quot;
+        break
+
+    try:
+        guess = whole(reply)
+    catch problem:
+        say &quot;That was not a number. Try again.&quot;
+        skip
+
+    tries = tries + 1
+    if guess == secret:
+        say &quot;Correct! It took you&quot;, tries, &quot;tries.&quot;
+        break
+    else if guess &lt; secret:
+        say &quot;Higher.&quot;
+    else:
+        say &quot;Lower.&quot;
+
+if tries == 7:
+    say &quot;Out of tries. The number was&quot;, secret</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+<section id="ex-hello">
+    <div class="wrap">
+      <h2>hello.chop</h2>
+      <p class="lede">The traditional first program.
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/hello.chop" rel="noopener">View on GitHub</a></p>
+      
+      <div class="pane" data-runner data-filename="hello.chop" data-autorun="no">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>hello.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="4"># The traditional first program.
+say &quot;Hello, world!&quot;</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+<section id="ex-notes">
+    <div class="wrap">
+      <h2>notes.chop</h2>
+      <p class="lede">Read and write files.
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/notes.chop" rel="noopener">View on GitHub</a></p>
+      
+      <div class="pane" data-runner data-filename="notes.chop" data-autorun="no">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>notes.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="19"># Read and write files.
+use files
+use text
+
+path = &quot;/tmp/chopcap-notes.txt&quot;
+
+files.write(path, &quot;milk\nbread\n&quot;)
+files.append(path, &quot;coffee\n&quot;)
+
+say &quot;The file now holds:&quot;
+for line in files.lines(path):
+    say &quot;  -&quot;, line
+
+say &quot;&quot;
+say &quot;Shouted back:&quot;, text.upper(files.read(path))
+files.remove(path)
+say &quot;File still there?&quot;, files.exists(path)</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+<section id="ex-primes">
+    <div class="wrap">
+      <h2>primes.chop</h2>
+      <p class="lede">Find the prime numbers below 60.
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/primes.chop" rel="noopener">View on GitHub</a></p>
+      
+      <div class="pane" data-runner data-filename="primes.chop" data-autorun="no">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>primes.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="21"># Find the prime numbers below 60.
+use math
+
+fun is_prime(n):
+    if n &lt; 2:
+        return false
+    for d in 2 to whole(math.sqrt(n)):
+        if n % d == 0:
+            return false
+    return true
+
+found = []
+for n in 1 to 60:
+    if is_prime(n):
+        push(found, n)
+
+say &quot;Primes below 60:&quot;
+say found
+say &quot;There are&quot;, len(found), &quot;of them.&quot;</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+<section id="ex-shopping">
+    <div class="wrap">
+      <h2>shopping.chop</h2>
+      <p class="lede">Working with lists.
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/shopping.chop" rel="noopener">View on GitHub</a></p>
+      
+      <div class="pane" data-runner data-filename="shopping.chop" data-autorun="no">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>shopping.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="19"># Working with lists.
+use lists
+
+basket = [&quot;bread&quot;, &quot;milk&quot;, &quot;apples&quot;]
+
+say &quot;Shopping list:&quot;
+for i in 0 to len(basket) - 1:
+    say &quot;  &quot; + text(i + 1) + &quot;. &quot; + basket[i]
+
+push(basket, &quot;coffee&quot;)
+say &quot;&quot;
+say &quot;After adding coffee:&quot;, basket
+say &quot;In alphabetical order:&quot;, lists.sort(basket)
+say &quot;Do we need milk?&quot;, lists.contains(basket, &quot;milk&quot;)
+
+removed = lists.remove(basket, 0)
+say &quot;Removed&quot;, removed, &quot;-&gt;&quot;, basket</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+<section id="ex-temperature">
+    <div class="wrap">
+      <h2>temperature.chop</h2>
+      <p class="lede">Convert temperatures and print a small table.
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/temperature.chop" rel="noopener">View on GitHub</a></p>
+      
+      <div class="pane" data-runner data-filename="temperature.chop" data-autorun="no">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>temperature.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="18"># Convert temperatures and print a small table.
+use math
+
+fun to_fahrenheit(c):
+    return c * 9 / 5 + 32
+
+fun to_celsius(f):
+    return (f - 32) * 5 / 9
+
+say &quot;A few conversions:&quot;
+for c in -10 to 40:
+    if c % 10 == 0:
+        say text(c) + &quot;C is &quot; + text(math.round(to_fahrenheit(c), 1)) + &quot;F&quot;
+
+say &quot;&quot;
+say &quot;98.6F is&quot;, math.round(to_celsius(98.6), 1), &quot;degrees Celsius.&quot;</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+<section id="ex-words">
+    <div class="wrap">
+      <h2>words.chop</h2>
+      <p class="lede">Count the words in a piece of text.
+        <a href="https://github.com/ilikemacos/chopcap/blob/main/examples/words.chop" rel="noopener">View on GitHub</a></p>
+      
+      <div class="pane" data-runner data-filename="words.chop" data-autorun="no">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>words.chop</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="24"># Count the words in a piece of text.
+use text
+use lists
+
+passage = &quot;the quick brown fox jumps over the lazy dog the end&quot;
+words = text.split(passage)
+
+say &quot;Words:&quot;, len(words)
+
+seen = []
+counts = []
+for w in words:
+    at = lists.find(seen, w)
+    if at == -1:
+        push(seen, w)
+        push(counts, 1)
+    else:
+        counts[at] = counts[at] + 1
+
+for i in 0 to len(seen) - 1:
+    if counts[i] &gt; 1:
+        say seen[i], &quot;appears&quot;, counts[i], &quot;times&quot;</textarea>
+        <pre class="console"><span class="muted">Press Run to see what this prints.</span></pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-45 32 32)"><rect x="25" y="1" width="14" height="28" rx="7" fill="var(--logo-accent)"/><rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink)"/></g></svg><span>Chopcap</span></a>
+        <p>A very small programming language. Programming without the clutter.</p>
+      </div>
+      <div>
+        <h5>Learn</h5>
+        <ul>
+          <li><a href="/docs.html#getting-started">Getting started</a></li>
+          <li><a href="/docs.html#language-basics">Language basics</a></li>
+          <li><a href="/docs.html#standard-library">Standard library</a></li>
+          <li><a href="/docs.html#specification">Specification</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Use</h5>
+        <ul>
+          <li><a href="/docs.html#installation">Installation</a></li>
+          <li><a href="/docs.html#cli">CLI reference</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="/playground.html">Playground</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Project</h5>
+        <ul>
+          <li><a href="https://github.com/ilikemacos/chopcap" rel="noopener">GitHub</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/releases" rel="noopener">Releases</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/blob/main/CHANGELOG.md" rel="noopener">Changelog</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/blob/main/LICENSE" rel="noopener">MIT License</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Chopcap <code>0.1.0</code> — an early release. MIT licensed.</span>
+      <span>Built with a C compiler and not much else.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/chopcap.js"></script>
+<script src="/assets/site.js"></script>
+</body>
+</html>

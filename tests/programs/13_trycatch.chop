@@ -1,0 +1,23 @@
+try:
+    error "something went wrong"
+catch problem:
+    say "caught:", problem
+
+try:
+    say 1 / 0
+catch problem:
+    say "caught:", problem
+
+fun risky(n):
+    if n < 0:
+        error "n must not be negative"
+    return n * 2
+
+try:
+    say risky(4)
+    say risky(-1)
+    say "never reached"
+catch problem:
+    say "caught:", problem
+
+say "still running"

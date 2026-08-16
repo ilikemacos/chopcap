@@ -1,0 +1,9 @@
+use random
+random.seed(42)
+a = random.number(1, 6)
+say a >= 1 and a <= 6
+d = random.decimal()
+say d >= 0 and d < 1
+say random.pick([7]) 
+shuffled = random.shuffle([1, 2, 3])
+say len(shuffled)

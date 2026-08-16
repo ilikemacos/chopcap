@@ -1,0 +1,8 @@
+# Ask a question, then use the answer.
+name = ask "What is your name? "
+
+if name == nothing or name == "":
+    name = "stranger"
+
+say "Hello, " + name + "!"
+say "Your name has", len(name), "letters."

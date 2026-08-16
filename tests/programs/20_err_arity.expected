@@ -1,0 +1,7 @@
+
+Chopcap Error
+
+  20_err_arity.chop, line 3:
+    say add(1)
+
+  `add` needs 2 values but got 1.

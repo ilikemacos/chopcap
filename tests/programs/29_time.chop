@@ -1,0 +1,9 @@
+use time
+use text
+say len(time.date())
+say len(time.stamp())
+say time.year() > 2000
+say time.month() >= 1 and time.month() <= 12
+start = time.clock()
+time.sleep(0.01)
+say time.clock() - start >= 0.005

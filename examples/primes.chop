@@ -1,0 +1,19 @@
+# Find the prime numbers below 60.
+use math
+
+fun is_prime(n):
+    if n < 2:
+        return false
+    for d in 2 to whole(math.sqrt(n)):
+        if n % d == 0:
+            return false
+    return true
+
+found = []
+for n in 1 to 60:
+    if is_prime(n):
+        push(found, n)
+
+say "Primes below 60:"
+say found
+say "There are", len(found), "of them."

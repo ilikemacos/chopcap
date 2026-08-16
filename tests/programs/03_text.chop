@@ -1,0 +1,10 @@
+name = "Chopcap"
+say "Hello, " + name + "!"
+say "count: " + 7
+say len(name)
+say name[0], name[-1]
+say "line1\nline2"
+say "tab\there"
+say "quote: \"hi\""
+say name == "Chopcap", name != "chopcap"
+say "apple" < "banana"

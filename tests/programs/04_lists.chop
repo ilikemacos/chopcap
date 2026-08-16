@@ -1,0 +1,16 @@
+things = [1, 2, 3]
+say things
+say len(things)
+say things[0], things[2], things[-1]
+things[1] = 20
+say things
+push(things, 4)
+say things
+say pop(things)
+say things
+empty = []
+say empty, len(empty)
+mixed = [1, "two", true, nothing, [5]]
+say mixed
+say [1, 2] + [3]
+say 2 in things, 99 in things

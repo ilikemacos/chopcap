@@ -1,0 +1,19 @@
+use lists
+use math
+
+scores = [72, 91, 64, 88, 95, 70]
+
+fun average(values):
+    return lists.sum(values) / len(values)
+
+say "count  ", len(scores)
+say "lowest ", lists.min(scores)
+say "highest", lists.max(scores)
+say "average", math.round(average(scores), 2)
+say "sorted ", lists.sort(scores)
+
+passed = []
+for s in scores:
+    if s >= 75:
+        push(passed, s)
+say "passed ", passed

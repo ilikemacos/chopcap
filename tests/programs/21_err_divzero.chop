@@ -1,0 +1,3 @@
+top = 10
+bottom = 0
+say top / bottom

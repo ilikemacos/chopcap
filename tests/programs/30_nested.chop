@@ -1,0 +1,16 @@
+grid = [[1, 2], [3, 4]]
+for row in grid:
+    line = ""
+    for cell in row:
+        line = line + text(cell) + " "
+    say line
+
+fun outer(n):
+    fun inner(m):
+        return m * m
+    total = 0
+    for i in 1 to n:
+        total = total + inner(i)
+    return total
+
+say outer(4)

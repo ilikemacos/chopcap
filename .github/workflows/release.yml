@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to build, without the leading v
+        required: true
+
+jobs:
+  build:
+    name: Build macOS archives
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Work out the version
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            echo "value=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Test before releasing
+        run: make test
+
+      - name: Build the release archives
+        run: ./scripts/build-release.sh "${{ steps.version.outputs.value }}"
+
+      - name: Check the version matches the source
+        run: |
+          got=$(./build/chopcap --version | awk '{print $2}')
+          want="${{ steps.version.outputs.value }}"
+          if [ "$got" != "$want" ]; then
+            echo "CHOPCAP_VERSION in src/chopcap.h is $got but the tag says $want" >&2
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chopcap-macos
+          path: dist/*
+
+      - name: Publish the GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chopcap — programming without the clutter</title>
+<meta name="description" content="Chopcap 0.1.0 is a very small, very readable programming language for macOS. One binary, no dependencies, friendly errors.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Chopcap — programming without the clutter">
+<meta property="og:description" content="Chopcap 0.1.0 is a very small, very readable programming language for macOS. One binary, no dependencies, friendly errors.">
+<meta property="og:type" content="website">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-45 32 32)"><rect x="25" y="1" width="14" height="28" rx="7" fill="var(--logo-accent)"/><rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink)"/></g></svg><span>Chopcap</span><span class="version">0.1.0</span></a>
+    <nav class="site-nav">
+        <a href="/docs.html">Docs</a>
+        <a href="/examples.html" data-optional>Examples</a>
+        <a href="/playground.html">Playground</a>
+        <a href="https://github.com/ilikemacos/chopcap" rel="noopener" data-optional>GitHub</a>
+        <button class="theme-toggle" type="button">☾</button>
+      </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" style="border-top:none">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">v0.1.0 — an early release</span>
+        <h1>Chopcap</h1>
+        <p class="tagline">Programming without the clutter.</p>
+        <p class="blurb">A very small language for people who want to write a program, not a
+          ceremony. One binary, no dependencies, errors that read like a person wrote them,
+          and a manual you can finish in an afternoon.</p>
+
+        <div class="buttons">
+          <a class="btn btn-primary" href="#install">Install</a>
+          <a class="btn" href="/docs.html">Documentation</a>
+          <a class="btn" href="https://github.com/ilikemacos/chopcap" rel="noopener">GitHub</a>
+        </div>
+
+        <div class="copyline">
+          <span class="prompt">$</span>
+          <code>curl -fsSL https://raw.githubusercontent.com/ilikemacos/chopcap/main/install.sh | sh</code>
+          <button class="copy-btn" type="button" data-copy="curl -fsSL https://raw.githubusercontent.com/ilikemacos/chopcap/main/install.sh | sh">Copy</button>
+        </div>
+        <p class="note">macOS on Apple Silicon or Intel. One file, about 110&nbsp;KB.</p>
+      </div>
+
+      <div class="pane" data-runner data-filename="hello.chop">
+        <div class="pane-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>hello.chop — edit me</span>
+          <button class="run" type="button">Run</button>
+        </div>
+        <textarea class="editor" spellcheck="false" rows="13"># Chopcap, in one screen.
+say "Hello, world!"
+
+fun greet(who):
+    return "Hello, " + who + "!"
+
+for name in ["Ada", "Grace", "Alan"]:
+    say greet(name)
+
+use math
+say "the square root of 144 is", math.sqrt(144)</textarea>
+        <pre class="console"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <h2>Small on purpose</h2>
+    <p class="lede">Twenty-two keywords, seven built-in functions and six library modules.
+      That is the whole language. There is nothing else to learn later.</p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="mark">::</div>
+        <h3>Simple syntax</h3>
+        <p><code>say</code> prints, <code>ask</code> reads, <code>fun</code> defines.
+          Indented blocks, no semicolons, no braces, no boilerplate around your first line.</p>
+      </div>
+      <div class="feature">
+        <div class="mark">→</div>
+        <h3>Fast startup</h3>
+        <p>A 110&nbsp;KB native binary with no runtime to load. A <code>.chop</code> script
+          starts in a couple of milliseconds, so it feels like a shell command.</p>
+      </div>
+      <div class="feature">
+        <div class="mark">!</div>
+        <h3>Friendly errors</h3>
+        <p>Never a stack trace. Every error names the file and line, shows the line, explains
+          the problem in ordinary words, and often guesses what you meant.</p>
+      </div>
+      <div class="feature">
+        <div class="mark">◔</div>
+        <h3>A tiny learning curve</h3>
+        <p>The complete manual is one page. If you have written anything before, you will be
+          writing useful Chopcap within about ten minutes.</p>
+      </div>
+      <div class="feature">
+        <div class="mark">⌘</div>
+        <h3>macOS first</h3>
+        <p>A one-command, checksum-verified install for both Apple Silicon and
+          Intel. No package manager, no virtual environment, no project file.</p>
+      </div>
+      <div class="feature">
+        <div class="mark">{}</div>
+        <h3>Open source</h3>
+        <p>About 3,500 lines of dependency-free C11 you can read in a sitting, MIT licensed,
+          with a test suite that runs with a single <code>make test</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="errors">
+  <div class="wrap">
+    <h2>Errors that help</h2>
+    <p class="lede">A beginner should never meet a stack trace. When Chopcap cannot run
+      something, it says so the way a patient person would.</p>
+    <div class="example-pair">
+      <div>
+        <p class="out-label">hello.chop</p>
+        <pre class="code"><code data-lang="chopcap">username = "theo"
+say "Hello!"
+
+say name</code></pre>
+      </div>
+      <div>
+        <p class="out-label">what you see</p>
+        <pre class="output-box">Hello!
+
+Chopcap Error
+
+  hello.chop, line 4:
+    say name
+
+  `name` does not exist.
+  Did you mean `username`?</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="examples" data-tabs>
+  <div class="wrap">
+    <h2>The language, by example</h2>
+    <p class="lede">Six short programs that cover most of Chopcap. Every one of them runs
+      exactly like this.</p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-for="hello" aria-selected="true">Hello World</button>
+      <button class="tab" role="tab" data-for="vars" aria-selected="false">Variables</button>
+      <button class="tab" role="tab" data-for="cond" aria-selected="false">Conditions</button>
+      <button class="tab" role="tab" data-for="loops" aria-selected="false">Loops</button>
+      <button class="tab" role="tab" data-for="funs" aria-selected="false">Functions</button>
+      <button class="tab" role="tab" data-for="real" aria-selected="false">A small program</button>
+    </div>
+
+    <div data-panel="hello">
+      <div class="example-pair">
+        <div>
+          <pre class="code"><code data-lang="chopcap">say "Hello, world!"
+say "Chopcap", "says", "hi"</code></pre>
+        </div>
+        <div>
+          <p class="out-label">output</p>
+          <pre class="output-box">Hello, world!
+Chopcap says hi</pre>
+        </div>
+      </div>
+    </div>
+
+    <div data-panel="vars" hidden>
+      <div class="example-pair">
+        <div>
+          <pre class="code"><code data-lang="chopcap">count = 42            # number
+price = 9.99          # decimal
+name = "Chopcap"      # text
+ready = true          # boolean
+things = [1, "two"]   # list
+
+say name + " v0.1"
+say count / 4, count % 5
+say things[0], things[-1], len(things)</code></pre>
+        </div>
+        <div>
+          <p class="out-label">output</p>
+          <pre class="output-box">Chopcap v0.1
+10.5 2
+1 two 2</pre>
+        </div>
+      </div>
+    </div>
+
+    <div data-panel="cond" hidden>
+      <div class="example-pair">
+        <div>
+          <pre class="code"><code data-lang="chopcap">score = 78
+
+if score > 90:
+    say "excellent"
+else if score > 70:
+    say "good"
+else:
+    say "keep going"
+
+if score > 50 and not score == 78:
+    say "never printed"
+
+say "cap" in "chopcap"</code></pre>
+        </div>
+        <div>
+          <p class="out-label">output</p>
+          <pre class="output-box">good
+true</pre>
+        </div>
+      </div>
+    </div>
+
+    <div data-panel="loops" hidden>
+      <div class="example-pair">
+        <div>
+          <pre class="code"><code data-lang="chopcap">for name in ["ada", "alan"]:
+    say "hello " + name
+
+for i in 1 to 5 by 2:
+    say i
+
+count = 3
+while count > 0:
+    say count
+    count = count - 1</code></pre>
+        </div>
+        <div>
+          <p class="out-label">output</p>
+          <pre class="output-box">hello ada
+hello alan
+1
+3
+5
+3
+2
+1</pre>
+        </div>
+      </div>
+    </div>
+
+    <div data-panel="funs" hidden>
+      <div class="example-pair">
+        <div>
+          <pre class="code"><code data-lang="chopcap">fun add(a, b):
+    return a + b
+
+fun fact(n):
+    if n <= 1:
+        return 1
+    return n * fact(n - 1)
+
+say add(5, 7)
+say fact(6)
+
+fun apply(f, v):
+    return f(v)
+
+say apply(fact, 4)</code></pre>
+        </div>
+        <div>
+          <p class="out-label">output</p>
+          <pre class="output-box">12
+720
+24</pre>
+        </div>
+      </div>
+    </div>
+
+    <div data-panel="real" hidden>
+      <div class="example-pair">
+        <div>
+          <pre class="code"><code data-lang="chopcap"># Marks for a small class.
+use lists
+use math
+
+scores = [72, 91, 64, 88, 95, 70]
+
+fun average(values):
+    return lists.sum(values) / len(values)
+
+say "count  ", len(scores)
+say "lowest ", lists.min(scores)
+say "highest", lists.max(scores)
+say "average", math.round(average(scores), 2)
+
+passed = []
+for s in scores:
+    if s >= 75:
+        push(passed, s)
+say "passed ", passed</code></pre>
+        </div>
+        <div>
+          <p class="out-label">output</p>
+          <pre class="output-box">count   6
+lowest  64
+highest 95
+average 80
+passed  [91, 88, 95]</pre>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:22px">
+      <a class="btn" href="/examples.html">All nine example programs</a>
+      <a class="btn" href="/playground.html">Try it in the playground</a>
+    </p>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <h2>Install Chopcap</h2>
+    <p class="lede">One command. It detects your chip, downloads the matching binary from
+      GitHub Releases, checks its SHA-256 checksum, and installs a single file.</p>
+
+    <div class="copyline" style="max-width:760px">
+      <span class="prompt">$</span>
+      <code>curl -fsSL https://raw.githubusercontent.com/ilikemacos/chopcap/main/install.sh | sh</code>
+      <button class="copy-btn" type="button" data-copy="curl -fsSL https://raw.githubusercontent.com/ilikemacos/chopcap/main/install.sh | sh">Copy</button>
+    </div>
+
+    <div class="cards" style="margin-top:26px">
+      <div class="card">
+        <h3>Then run something</h3>
+        <p><code>chopcap hello.chop</code> runs a program, and <code>chopcap</code> on its own
+          opens the interactive prompt.</p>
+      </div>
+      <a class="card" href="/docs.html#installation">
+        <h3>Other ways in</h3>
+        <p>Download an archive by hand, pick your own install directory, or build from source
+          with nothing but a C compiler.</p>
+      </a>
+      <a class="card" href="https://github.com/ilikemacos/chopcap/releases" rel="noopener">
+        <h3>Releases</h3>
+        <p>Archives for <code>arm64</code>, <code>x86_64</code> and a universal build, with
+          published checksums.</p>
+      </a>
+    </div>
+
+    <p class="note" style="margin-top:20px;color:var(--text-faint);font-size:13.5px">
+      Prefer to read before you run? The installer is
+      <a href="/install.sh" style="color:var(--accent)">right here</a> — it is a short,
+      commented shell script that writes exactly one file.
+    </p>
+  </div>
+</section>
+
+<section id="learn">
+  <div class="wrap">
+    <h2>Learn it in an afternoon</h2>
+    <p class="lede">The documentation is the whole language, written for people who are new
+      to it rather than for people who already know.</p>
+    <div class="cards">
+      <a class="card" href="/docs.html#getting-started">
+        <h3>Getting started</h3>
+        <p>Your first program, the interactive prompt, and what to read next.</p>
+      </a>
+      <a class="card" href="/docs.html#language-basics">
+        <h3>Language basics</h3>
+        <p>Lines, blocks, values and operators — the shape of a program on one page.</p>
+      </a>
+      <a class="card" href="/docs.html#standard-library">
+        <h3>Standard library</h3>
+        <p>Seven built-ins and six modules: math, text, lists, random, files, time.</p>
+      </a>
+      <a class="card" href="/docs.html#error-handling">
+        <h3>Error handling</h3>
+        <p><code>try</code>, <code>catch</code>, <code>error</code>, and what each message means.</p>
+      </a>
+      <a class="card" href="/docs.html#cli">
+        <h3>CLI reference</h3>
+        <p>Every flag, the REPL, reading from a pipe, and the exit codes.</p>
+      </a>
+      <a class="card" href="/docs.html#specification">
+        <h3>Specification</h3>
+        <p>Precedence, scope, evaluation order — and the limitations of 0.1.0, stated plainly.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-45 32 32)"><rect x="25" y="1" width="14" height="28" rx="7" fill="var(--logo-accent)"/><rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink)"/></g></svg><span>Chopcap</span></a>
+        <p>A very small programming language. Programming without the clutter.</p>
+      </div>
+      <div>
+        <h5>Learn</h5>
+        <ul>
+          <li><a href="/docs.html#getting-started">Getting started</a></li>
+          <li><a href="/docs.html#language-basics">Language basics</a></li>
+          <li><a href="/docs.html#standard-library">Standard library</a></li>
+          <li><a href="/docs.html#specification">Specification</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Use</h5>
+        <ul>
+          <li><a href="/docs.html#installation">Installation</a></li>
+          <li><a href="/docs.html#cli">CLI reference</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="/playground.html">Playground</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Project</h5>
+        <ul>
+          <li><a href="https://github.com/ilikemacos/chopcap" rel="noopener">GitHub</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/releases" rel="noopener">Releases</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/blob/main/CHANGELOG.md" rel="noopener">Changelog</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/blob/main/LICENSE" rel="noopener">MIT License</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Chopcap <code>0.1.0</code> — an early release. MIT licensed.</span>
+      <span>Built with a C compiler and not much else.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/chopcap.js"></script>
+<script src="/assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+
+Chopcap Error
+
+  18_err_types.chop, line 1:
+    say "a" - 1
+
+  cannot use `-` with text and number.
+  This operator only works with numbers.

@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation — Chopcap</title>
+<meta name="description" content="The complete manual for Chopcap 0.1.0: installation, the language, the standard library, the CLI and the specification.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Documentation — Chopcap">
+<meta property="og:description" content="The complete manual for Chopcap 0.1.0: installation, the language, the standard library, the CLI and the specification.">
+<meta property="og:type" content="website">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-45 32 32)"><rect x="25" y="1" width="14" height="28" rx="7" fill="var(--logo-accent)"/><rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink)"/></g></svg><span>Chopcap</span><span class="version">0.1.0</span></a>
+    <nav class="site-nav">
+        <a href="/docs.html" aria-current="page">Docs</a>
+        <a href="/examples.html" data-optional>Examples</a>
+        <a href="/playground.html">Playground</a>
+        <a href="https://github.com/ilikemacos/chopcap" rel="noopener" data-optional>GitHub</a>
+        <button class="theme-toggle" type="button">☾</button>
+      </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="doc-layout">
+    <aside class="doc-nav"><h4>Start here</h4><div class="doc-nav-inner"><a href="#installation">Installation</a><a href="#getting-started">Getting Started</a><a href="#language-basics">Language Basics</a></div><h4>The language</h4><div class="doc-nav-inner"><a href="#variables">Variables</a><a href="#types">Types</a><a href="#conditions">Conditions</a><a href="#loops">Loops</a><a href="#functions">Functions</a><a href="#lists">Lists</a><a href="#modules">Modules</a><a href="#error-handling">Error Handling</a></div><h4>Reference</h4><div class="doc-nav-inner"><a href="#standard-library">Standard Library</a><a href="#cli">CLI Reference</a><a href="#examples">Examples</a><a href="#specification">Specification</a></div></aside>
+    <article class="doc-body">
+      <h1>Chopcap documentation</h1>
+      <p>Everything about Chopcap 0.1.0 on one page. It is short on purpose —
+      the whole language fits in an afternoon.</p>
+      <h2 id="installation">Installation</h2>
+<p>Chopcap 0.1.0 ships as a single macOS binary with no dependencies.</p>
+<h3 id="the-one-line-install">The one-line install</h3>
+<pre class="code"><code>curl -fsSL https://raw.githubusercontent.com/ilikemacos/chopcap/main/install.sh | sh</code></pre>
+<p>The installer:</p>
+<ol><li>checks you are on macOS,</li><li>detects Apple Silicon (<code>arm64</code>) or Intel (<code>x86_64</code>),</li><li>downloads the matching binary from GitHub Releases,</li><li>checks it against the published SHA-256 checksum,</li><li>copies it to <code>/usr/local/bin</code> if that is writable, otherwise <code>~/.local/bin</code>,</li><li>adds that directory to your <code>PATH</code> if it is missing,</li><li>runs <code>chopcap --version</code> to prove it worked.</li></ol>
+<p>It writes exactly one file: the <code>chopcap</code> binary. Nothing else is touched.</p>
+<h4 id="options">Options</h4>
+<pre class="code"><code>CHOPCAP_INSTALL_DIR=~/bin  curl -fsSL .../install.sh | sh   # choose the folder
+CHOPCAP_VERSION=0.1.0      curl -fsSL .../install.sh | sh   # pin a version</code></pre>
+<h3 id="manual-install">Manual install</h3>
+<p>Download a release archive from
+<a href="https://github.com/ilikemacos/chopcap/releases">the releases page</a>, then:</p>
+<pre class="code"><code>tar -xzf chopcap-0.1.0-macos-arm64.tar.gz
+chmod +x chopcap
+mv chopcap /usr/local/bin/
+chopcap --version</code></pre>
+<p>There is also a <code>universal</code> archive that runs natively on both chip families.</p>
+<h3 id="building-from-source">Building from source</h3>
+<p>You need a C compiler and <code>make</code>. That is all — Chopcap has no third-party
+dependencies.</p>
+<pre class="code"><code>git clone https://github.com/ilikemacos/chopcap.git
+cd chopcap
+make            # builds build/chopcap
+make test       # runs the full test suite
+sudo make install</code></pre>
+<p>To build a universal macOS binary:</p>
+<pre class="code"><code>make universal  # build/universal/chopcap</code></pre>
+<p><code>make install</code> honours <code>PREFIX</code> (default <code>/usr/local</code>) and <code>DESTDIR</code>.</p>
+<h3 id="uninstalling">Uninstalling</h3>
+<pre class="code"><code>rm &quot;$(command -v chopcap)&quot;</code></pre>
+<p>or <code>sudo make uninstall</code> from a source checkout.</p>
+<h2 id="getting-started">Getting Started</h2>
+<h3 id="say-hello">Say hello</h3>
+<p>Put this in a file called <code>hello.chop</code>:</p>
+<pre class="code"><code data-lang="chopcap">say &quot;Hello, world!&quot;</code></pre>
+<p>Run it:</p>
+<pre class="code"><code>chopcap hello.chop</code></pre>
+<pre class="code"><code>Hello, world!</code></pre>
+<p>That is a complete Chopcap program. No imports, no <code>main</code>, no semicolons.</p>
+<h3 id="try-things-without-a-file">Try things without a file</h3>
+<p>Run <code>chopcap</code> with no arguments to get the interactive prompt:</p>
+<pre class="code"><code>$ chopcap
+Chopcap 0.1.0
+Type some Chopcap, or `exit` to quit. `help` shows a reminder.
+
+&gt;&gt;&gt; say &quot;Hello!&quot;
+Hello!
+&gt;&gt;&gt; 2 + 2
+4
+&gt;&gt;&gt; name = &quot;Ada&quot;
+&gt;&gt;&gt; &quot;Hi, &quot; + name
+&quot;Hi, Ada&quot;
+&gt;&gt;&gt; exit</code></pre>
+<p>A line ending in <code>:</code> starts a block. Keep typing indented lines, then press
+Enter on a blank line to run it:</p>
+<pre class="code"><code>&gt;&gt;&gt; fun square(n):
+...     return n * n
+...
+&gt;&gt;&gt; square(9)
+81</code></pre>
+<h3 id="a-slightly-bigger-program">A slightly bigger program</h3>
+<pre class="code"><code data-lang="chopcap">name = ask &quot;What is your name? &quot;
+say &quot;Hello, &quot; + name + &quot;!&quot;
+
+fun add(a, b):
+    return a + b
+
+say &quot;5 + 7 is&quot;, add(5, 7)
+
+for i in 1 to 3:
+    say &quot;line&quot;, i</code></pre>
+<pre class="code"><code>What is your name? Ada
+Hello, Ada!
+5 + 7 is 12
+line 1
+line 2
+line 3</code></pre>
+<h3 id="what-to-read-next">What to read next</h3>
+<ul><li><a href="#language-basics">Language Basics</a> for the rules in one page</li><li><a href="#examples">Examples</a> for small complete programs</li></ul>
+<h2 id="language-basics">Language Basics</h2>
+<p>Everything about the shape of a Chopcap program, on one page.</p>
+<h3 id="one-statement-per-line">One statement per line</h3>
+<p>Lines are statements. There are no semicolons and no braces.</p>
+<pre class="code"><code data-lang="chopcap">x = 1
+y = 2
+say x + y</code></pre>
+<h3 id="comments-start-with">Comments start with <code>#</code></h3>
+<pre class="code"><code data-lang="chopcap"># a whole line
+x = 1  # or the end of a line</code></pre>
+<h3 id="blocks-are-indented-under-a">Blocks are indented under a <code>:</code></h3>
+<p>Anything that opens a block ends its line with <code>:</code>, and the body is indented.
+Four spaces is the convention; any consistent amount works, as long as every
+line in the same block lines up.</p>
+<pre class="code"><code data-lang="chopcap">if ready:
+    say &quot;go&quot;
+    say &quot;still inside the block&quot;
+say &quot;outside again&quot;</code></pre>
+<h3 id="printing-say">Printing: <code>say</code></h3>
+<p><code>say</code> prints its values with a space between them and a newline at the end.</p>
+<pre class="code"><code data-lang="chopcap">say &quot;Hello&quot;
+say &quot;x is&quot;, 42, &quot;and that is that&quot;
+say                     # an empty line</code></pre>
+<h3 id="input-ask">Input: <code>ask</code></h3>
+<p><code>ask</code> prints a prompt and gives back what was typed, as text.</p>
+<pre class="code"><code data-lang="chopcap">name = ask &quot;What is your name? &quot;
+age = number(ask &quot;How old are you? &quot;)</code></pre>
+<p>At the end of input, <code>ask</code> gives back <code>nothing</code>.</p>
+<h3 id="values">Values</h3>
+<pre class="code"><code data-lang="chopcap">count   = 42            # number
+price   = 9.99          # decimal
+name    = &quot;Chopcap&quot;     # text
+ready   = true          # boolean
+missing = nothing       # nothing
+things  = [1, 2, 3]     # list</code></pre>
+<h3 id="operators">Operators</h3>
+<table><thead><tr><th>Kind</th><th>Operators</th></tr></thead><tbody><tr><td>Arithmetic</td><td><code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%</code> <code>^</code></td></tr><tr><td>Comparison</td><td><code>==</code> <code>!=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td></tr><tr><td>Logic</td><td><code>and</code> <code>or</code> <code>not</code></td></tr><tr><td>Membership</td><td><code>in</code></td></tr></tbody></table>
+<p><code>+</code> also joins text (<code>&quot;a&quot; + &quot;b&quot;</code>) and lists (<code>[1] + [2]</code>). If either side of
+<code>+</code> is text, the other side is turned into text for you.</p>
+<h3 id="the-whole-keyword-list">The whole keyword list</h3>
+<pre class="code"><code>and    as     ask    break  catch  else   error  false  for    fun
+if     in     not    nothing       or     return say    skip   true
+try    use    while</code></pre>
+<p>Twenty-two words. <code>to</code> and <code>by</code> are special only inside a counting <code>for</code>
+line, so you are still free to use them as names elsewhere.</p>
+<p>That is the entire language. Everything else lives in
+<a href="#standard-library">the standard library</a>.</p>
+<h2 id="variables">Variables</h2>
+<p>A variable is a name with a value. Use <code>=</code> to give it one.</p>
+<pre class="code"><code data-lang="chopcap">name = &quot;Ada&quot;
+count = 3
+count = count + 1
+say name, count          # Ada 4</code></pre>
+<p>There is no <code>var</code>, <code>let</code> or type annotation. A name comes into existence the
+first time you assign to it.</p>
+<h3 id="names">Names</h3>
+<p>Names start with a letter or <code>_</code>, then letters, digits or <code>_</code>.
+They are case sensitive: <code>count</code> and <code>Count</code> are different variables.</p>
+<pre class="code"><code data-lang="chopcap">first_name = &quot;Ada&quot;
+total2 = 10
+_hidden = true</code></pre>
+<h3 id="using-a-name-before-it-exists">Using a name before it exists</h3>
+<p>Chopcap stops and tells you, with a guess if it can make one:</p>
+<pre class="code"><code data-lang="chopcap">username = &quot;theo&quot;
+say name</code></pre>
+<pre class="code"><code>Chopcap Error
+
+  hello.chop, line 2:
+    say name
+
+  `name` does not exist.
+  Did you mean `username`?</code></pre>
+<h3 id="scope">Scope</h3>
+<p>Function parameters and anything first assigned inside a function belong to
+that function. Assigning to a name that already exists further out updates
+that outer variable.</p>
+<pre class="code"><code data-lang="chopcap">total = 0
+
+fun bump(by):
+    total = total + by      # updates the outer `total`
+    return total
+
+say bump(2)                 # 2
+say bump(3)                 # 5
+say total                   # 5
+
+fun shadow(total):          # a parameter is always local
+    total = 100
+    return total
+
+say shadow(1), total        # 100 5</code></pre>
+<p>Functions defined inside functions can see the variables around them:</p>
+<pre class="code"><code data-lang="chopcap">fun make_counter():
+    count = 0
+    fun step():
+        count = count + 1
+        return count
+    return step
+
+next = make_counter()
+say next(), next(), next()  # 1 2 3</code></pre>
+<h2 id="types">Types</h2>
+<p>Chopcap has six kinds of value. <code>type(x)</code> tells you which one you have.</p>
+<table><thead><tr><th>Name</th><th>Example</th><th><code>type()</code> gives</th></tr></thead><tbody><tr><td>number</td><td><code>42</code>, <code>-7</code>, <code>1_000_000</code></td><td><code>&quot;number&quot;</code></td></tr><tr><td>decimal</td><td><code>3.14</code>, <code>1.5e3</code></td><td><code>&quot;decimal&quot;</code></td></tr><tr><td>text</td><td><code>&quot;hello&quot;</code></td><td><code>&quot;text&quot;</code></td></tr><tr><td>boolean</td><td><code>true</code>, <code>false</code></td><td><code>&quot;boolean&quot;</code></td></tr><tr><td>list</td><td><code>[1, 2, 3]</code></td><td><code>&quot;list&quot;</code></td></tr><tr><td>nothing</td><td><code>nothing</code></td><td><code>&quot;nothing&quot;</code></td></tr></tbody></table>
+<p>Functions and modules are values too; both report as <code>&quot;function&quot;</code> and
+<code>&quot;module&quot;</code>.</p>
+<h3 id="numbers-and-decimals">Numbers and decimals</h3>
+<p>Whole numbers are exact 64-bit integers. Decimals are IEEE-754 doubles.
+Underscores make long numbers readable: <code>1_000_000</code>.</p>
+<p>Arithmetic keeps whole numbers whole where it can:</p>
+<pre class="code"><code data-lang="chopcap">say 2 + 3        # 5
+say 10 / 5       # 2      — divides exactly, so you get a whole number
+say 10 / 4       # 2.5    — does not divide exactly
+say 2 ^ 10       # 1024
+say 2 ^ 0.5      # 1.414213562
+say 7 % 3        # 1
+say 1.5 + 1.5    # 3</code></pre>
+<p>Dividing by zero is an error rather than a silent <code>infinity</code>.</p>
+<h3 id="text">Text</h3>
+<p>Text is written with double or single quotes and understands the escapes
+<code>\n</code>, <code>\t</code>, <code>\r</code>, <code>\\</code>, <code>\&quot;</code> and <code>\'</code>.</p>
+<pre class="code"><code data-lang="chopcap">greeting = &quot;Hello&quot;
+say greeting + &quot;, world!&quot;
+say &quot;count: &quot; + 7          # count: 7   — the number becomes text
+say len(greeting)          # 5
+say greeting[0]            # H
+say greeting[-1]           # o          — counting back from the end</code></pre>
+<p>Text is compared and ordered by its characters:</p>
+<pre class="code"><code data-lang="chopcap">say &quot;apple&quot; &lt; &quot;banana&quot;     # true
+say &quot;a&quot; == &quot;A&quot;             # false</code></pre>
+<p>Positions count bytes, so text outside plain ASCII should be handled with
+whole strings rather than by position. See <a href="#specification">Limitations</a>.</p>
+<h3 id="booleans-and-truth">Booleans and truth</h3>
+<p><code>true</code> and <code>false</code> are the booleans. Anywhere a condition is expected,
+these count as false:</p>
+<pre class="code"><code>false     nothing     0     &quot;&quot;     []</code></pre>
+<p>Everything else counts as true.</p>
+<pre class="code"><code data-lang="chopcap">if &quot;&quot;:
+    say &quot;never&quot;
+else:
+    say &quot;empty text is false&quot;</code></pre>
+<h3 id="nothing">nothing</h3>
+<p><code>nothing</code> is the absence of a value. Functions that do not <code>return</code> anything
+give back <code>nothing</code>, and <code>ask</code> gives <code>nothing</code> when input has run out.</p>
+<h3 id="converting-between-types">Converting between types</h3>
+<pre class="code"><code data-lang="chopcap">say text(42)          # &quot;42&quot;
+say text([1, 2])      # [1, 2]
+say number(&quot;3.5&quot;)     # 3.5
+say number(&quot;42&quot;)      # 42
+say whole(3.9)        # 3     — cuts towards zero
+say whole(-3.9)       # -3
+say number(&quot;abc&quot;)     # error: cannot turn &quot;abc&quot; into a number</code></pre>
+<p><code>number</code> refuses text that is not a number, so you can catch the mistake:</p>
+<pre class="code"><code data-lang="chopcap">try:
+    age = number(ask &quot;Age? &quot;)
+catch problem:
+    say &quot;That was not a number.&quot;</code></pre>
+<h2 id="conditions">Conditions</h2>
+<pre class="code"><code data-lang="chopcap">if score &gt; 90:
+    say &quot;excellent&quot;
+else if score &gt; 70:
+    say &quot;good&quot;
+else:
+    say &quot;keep going&quot;</code></pre>
+<p><code>else if</code> can repeat as many times as you like. <code>else</code> is optional.</p>
+<h3 id="comparing">Comparing</h3>
+<pre class="code"><code data-lang="chopcap">say 1 == 1        # true
+say 1 != 2        # true
+say 3 &lt; 5         # true
+say 3 &lt;= 3        # true
+say &quot;a&quot; &lt; &quot;b&quot;     # true</code></pre>
+<p>Numbers compare with numbers, text compares with text. Comparing a number
+with text is an error rather than a surprise:</p>
+<pre class="code"><code>cannot compare number with text using `&lt;`.
+Compare numbers with numbers, or text with text.</code></pre>
+<p><code>==</code> is the exception: it works on any two values and simply answers <code>false</code>
+when they are different kinds. Whole numbers and decimals compare by value,
+so <code>3 == 3.0</code> is <code>true</code>.</p>
+<h3 id="combining">Combining</h3>
+<pre class="code"><code data-lang="chopcap">if age &gt;= 18 and has_ticket:
+    say &quot;come in&quot;
+
+if day == &quot;saturday&quot; or day == &quot;sunday&quot;:
+    say &quot;weekend&quot;
+
+if not ready:
+    say &quot;not yet&quot;</code></pre>
+<p><code>and</code> and <code>or</code> stop as soon as the answer is known, and they give back the
+value that decided it — so <code>name or &quot;stranger&quot;</code> is a neat default:</p>
+<pre class="code"><code data-lang="chopcap">name = ask &quot;Name? &quot;
+say &quot;Hello, &quot; + (name or &quot;stranger&quot;)</code></pre>
+<h3 id="checking-membership">Checking membership</h3>
+<pre class="code"><code data-lang="chopcap">say 2 in [1, 2, 3]          # true
+say &quot;cap&quot; in &quot;chopcap&quot;      # true
+say &quot;z&quot; in &quot;chopcap&quot;        # false</code></pre>
+<h2 id="loops">Loops</h2>
+<h3 id="while-repeat-while-something-is-true"><code>while</code> — repeat while something is true</h3>
+<pre class="code"><code data-lang="chopcap">count = 0
+while count &lt; 3:
+    say count
+    count = count + 1</code></pre>
+<h3 id="for-in-go-through-a-list-or-some-text"><code>for ... in</code> — go through a list or some text</h3>
+<pre class="code"><code data-lang="chopcap">for name in [&quot;ada&quot;, &quot;grace&quot;, &quot;alan&quot;]:
+    say &quot;hello &quot; + name
+
+for letter in &quot;cap&quot;:
+    say letter</code></pre>
+<h3 id="for-in-a-to-b-count"><code>for ... in a to b</code> — count</h3>
+<pre class="code"><code data-lang="chopcap">for i in 1 to 5:
+    say i               # 1 2 3 4 5</code></pre>
+<p>Both ends are included. Counting always goes <strong>up</strong>: if the start is past the
+end, the loop simply does not run.</p>
+<pre class="code"><code data-lang="chopcap">for i in 5 to 1:
+    say &quot;never runs&quot;</code></pre>
+<p>To count down, or in bigger steps, add <code>by</code>:</p>
+<pre class="code"><code data-lang="chopcap">for i in 5 to 1 by -1:
+    say i               # 5 4 3 2 1
+
+for i in 0 to 10 by 5:
+    say i               # 0 5 10</code></pre>
+<h3 id="break-and-skip"><code>break</code> and <code>skip</code></h3>
+<p><code>break</code> leaves the loop. <code>skip</code> jumps to the next turn.</p>
+<pre class="code"><code data-lang="chopcap">for i in 1 to 10:
+    if i == 4:
+        break
+    if i % 2 == 0:
+        skip
+    say i               # 1 3</code></pre>
+<h3 id="looping-over-positions">Looping over positions</h3>
+<p><code>len</code> gives the length, and positions start at <code>0</code>:</p>
+<pre class="code"><code data-lang="chopcap">basket = [&quot;bread&quot;, &quot;milk&quot;]
+for i in 0 to len(basket) - 1:
+    say i, basket[i]</code></pre>
+<h2 id="functions">Functions</h2>
+<pre class="code"><code data-lang="chopcap">fun add(a, b):
+    return a + b
+
+say add(5, 7)       # 12</code></pre>
+<p><code>fun</code> names it, the parentheses list the parameters, and the indented block
+is the body.</p>
+<h3 id="returning">Returning</h3>
+<p><code>return</code> gives a value back and ends the function immediately. A function
+that never returns gives back <code>nothing</code>.</p>
+<pre class="code"><code data-lang="chopcap">fun greet(name):
+    say &quot;Hello, &quot; + name + &quot;!&quot;
+
+greet(&quot;Ada&quot;)            # Hello, Ada!
+say greet(&quot;Bob&quot;)        # Hello, Bob!  then  nothing</code></pre>
+<p><code>return</code> on its own is fine as an early exit:</p>
+<pre class="code"><code data-lang="chopcap">fun describe(n):
+    if n &lt; 0:
+        say &quot;negative&quot;
+        return
+    say &quot;zero or more&quot;</code></pre>
+<h3 id="the-right-number-of-values">The right number of values</h3>
+<p>Chopcap checks that a call matches the definition:</p>
+<pre class="code"><code data-lang="chopcap">fun add(a, b):
+    return a + b
+say add(1)</code></pre>
+<pre class="code"><code>`add` needs 2 values but got 1.</code></pre>
+<h3 id="functions-calling-themselves">Functions calling themselves</h3>
+<pre class="code"><code data-lang="chopcap">fun fact(n):
+    if n &lt;= 1:
+        return 1
+    return n * fact(n - 1)
+
+say fact(6)     # 720</code></pre>
+<p>A function that never stops calling itself is caught rather than crashing:</p>
+<pre class="code"><code>`forever` went too deep.
+A function is probably calling itself without ever stopping.</code></pre>
+<h3 id="functions-are-values">Functions are values</h3>
+<p>You can pass a function to another function, return one, and store one in a
+list.</p>
+<pre class="code"><code data-lang="chopcap">fun double(n):
+    return n * 2
+
+fun apply(f, v):
+    return f(v)
+
+say apply(double, 21)       # 42</code></pre>
+<p>Functions defined inside other functions remember the variables around them —
+see <a href="#variables">Variables</a>.</p>
+<h2 id="lists">Lists</h2>
+<p>A list holds values in order. It can hold any mix of them.</p>
+<pre class="code"><code data-lang="chopcap">things = [1, 2, 3]
+mixed = [1, &quot;two&quot;, true, nothing, [5]]
+empty = []</code></pre>
+<h3 id="reading-and-changing">Reading and changing</h3>
+<p>Positions start at <code>0</code>. Negative positions count back from the end.</p>
+<pre class="code"><code data-lang="chopcap">say things[0]        # 1
+say things[-1]       # 3
+things[1] = 20
+say things           # [1, 20, 3]
+say len(things)      # 3</code></pre>
+<p>Reaching past the end is an error with a clear message:</p>
+<pre class="code"><code>position 7 is outside this list of length 3.
+Valid positions run from 0 to the length minus one.</code></pre>
+<h3 id="growing-and-shrinking">Growing and shrinking</h3>
+<p><code>push</code> adds to the end, <code>pop</code> takes the last item off and gives it to you.</p>
+<pre class="code"><code data-lang="chopcap">push(things, 4)      # [1, 20, 3, 4]
+last = pop(things)   # last is 4</code></pre>
+<h3 id="joining-and-searching">Joining and searching</h3>
+<pre class="code"><code data-lang="chopcap">say [1, 2] + [3]         # [1, 2, 3]
+say 2 in [1, 2, 3]       # true</code></pre>
+<h3 id="going-through-a-list">Going through a list</h3>
+<pre class="code"><code data-lang="chopcap">for thing in things:
+    say thing</code></pre>
+<h3 id="the-lists-module">The <code>lists</code> module</h3>
+<p>Everything else lives in the <code>lists</code> module:</p>
+<pre class="code"><code data-lang="chopcap">use lists
+
+nums = [3, 1, 2]
+say lists.sort(nums)             # [1, 2, 3]   (a new list; nums is unchanged)
+say lists.reverse(nums)          # [2, 1, 3]
+say lists.sum(nums)              # 6
+say lists.min(nums), lists.max(nums)
+say lists.contains(nums, 2)      # true
+say lists.find(nums, 2)          # 2   (or -1 if it is not there)
+say lists.slice(nums, 1, 3)      # [1, 2]
+say lists.join([&quot;a&quot;, &quot;b&quot;], &quot;-&quot;)  # a-b</code></pre>
+<p><code>lists.sort</code>, <code>lists.reverse</code>, <code>lists.slice</code> and <code>lists.copy</code> make new lists.
+<code>lists.add</code>, <code>lists.insert</code> and <code>lists.remove</code> change the list you give them.</p>
+<p>See <a href="#standard-library">Standard Library</a> for the full list.</p>
+<h2 id="modules">Modules</h2>
+<h3 id="built-in-modules">Built-in modules</h3>
+<p><code>use</code> loads one of the modules that ship with Chopcap:</p>
+<pre class="code"><code data-lang="chopcap">use math
+say math.sqrt(16)       # 4</code></pre>
+<p>The name after <code>use</code> becomes a variable holding the module. Reach inside it
+with <code>.</code>.</p>
+<p>The built-in modules are <code>math</code>, <code>text</code>, <code>lists</code>, <code>random</code>, <code>files</code> and
+<code>time</code>. They are described in <a href="#standard-library">Standard Library</a>.</p>
+<p>Asking for one that does not exist tells you what does:</p>
+<pre class="code"><code>there is no module called `sockets`.
+Chopcap comes with: math, text, lists, random, files, time.</code></pre>
+<h3 id="renaming-a-module">Renaming a module</h3>
+<pre class="code"><code data-lang="chopcap">use random as dice
+say dice.number(1, 6)</code></pre>
+<h3 id="your-own-files">Your own files</h3>
+<p>A <code>.chop</code> file can be loaded as a module. Its top-level variables and
+functions become the module's contents.</p>
+<p><code>helpers.chop</code>:</p>
+<pre class="code"><code data-lang="chopcap">use text
+
+greeting = &quot;hello from helpers&quot;
+
+fun double(n):
+    return n * 2
+
+fun shout(s):
+    return text.upper(s) + &quot;!&quot;</code></pre>
+<p><code>main.chop</code>:</p>
+<pre class="code"><code data-lang="chopcap">use &quot;helpers.chop&quot; as helpers
+
+say helpers.greeting        # hello from helpers
+say helpers.double(21)      # 42
+say helpers.shout(&quot;hey&quot;)    # HEY!</code></pre>
+<p>Notes:</p>
+<ul><li>Loading a file needs a name, so <code>as</code> is required.</li><li>The path is relative to the file doing the loading, not to where you ran <code>chopcap</code> from.</li><li>The file runs once, from top to bottom, when it is loaded.</li><li>Files that load each other in a circle are caught and reported.</li></ul>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="what-an-error-looks-like">What an error looks like</h3>
+<p>Chopcap never prints an internal stack trace. Every error names the file and
+line, shows the line, says what went wrong, and adds a hint when it can.</p>
+<pre class="code"><code>Chopcap Error
+
+  hello.chop, line 4:
+    say name
+
+  `name` does not exist.
+  Did you mean `username`?</code></pre>
+<p>A program that fails ends with a non-zero exit code (<code>65</code> for a problem with
+the source text, <code>70</code> for a problem while running).</p>
+<h3 id="catching-problems-try-catch">Catching problems: <code>try</code> / <code>catch</code></h3>
+<pre class="code"><code data-lang="chopcap">try:
+    age = number(ask &quot;How old are you? &quot;)
+    say &quot;Next year:&quot;, age + 1
+catch problem:
+    say &quot;That was not a number.&quot;
+    say &quot;The details were:&quot;, problem</code></pre>
+<p>The name after <code>catch</code> receives the error message as text. It is optional:</p>
+<pre class="code"><code data-lang="chopcap">try:
+    risky()
+catch:
+    say &quot;that did not work&quot;</code></pre>
+<p>Only the <code>try</code> block is guarded. Once <code>catch</code> runs, the program carries on
+normally.</p>
+<h3 id="raising-your-own-error">Raising your own: <code>error</code></h3>
+<pre class="code"><code data-lang="chopcap">fun withdraw(balance, amount):
+    if amount &gt; balance:
+        error &quot;not enough money&quot;
+    return balance - amount
+
+try:
+    say withdraw(50, 100)
+catch problem:
+    say &quot;Sorry:&quot;, problem       # Sorry: not enough money</code></pre>
+<h3 id="things-chopcap-catches-for-you">Things Chopcap catches for you</h3>
+<table><thead><tr><th>Situation</th><th>Message</th></tr></thead><tbody><tr><td>Unknown name</td><td><code></code><code> </code>name<code> does not exist. </code><code></code></td></tr><tr><td>Wrong argument count</td><td><code></code><code> </code>add<code> needs 2 values but got 1. </code><code></code></td></tr><tr><td>Dividing by zero</td><td><code>cannot divide by zero.</code></td></tr><tr><td>Position past the end</td><td><code>position 7 is outside this list of length 3.</code></td></tr><tr><td>Adding mismatched values</td><td><code>cannot add number and list.</code></td></tr><tr><td>Calling something that is not a function</td><td><code>number is not a function.</code></td></tr><tr><td>Endless recursion</td><td><code></code><code> </code>forever<code> went too deep. </code><code></code></td></tr><tr><td>Bad indentation</td><td><code>this line's indentation does not match any open block.</code></td></tr><tr><td>Missing quote</td><td><code>this text value is missing its closing quote.</code></td></tr></tbody></table>
+<h2 id="standard-library">Standard Library</h2>
+<p>Chopcap 0.1.0 has seven built-in functions and six modules. That is the whole
+library — small enough to keep in your head.</p>
+<h3 id="built-in-functions">Built-in functions</h3>
+<p>Always available, no <code>use</code> needed.</p>
+<table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody><tr><td><code>len(x)</code></td><td>how long some text or a list is</td></tr><tr><td><code>text(x)</code></td><td>turn any value into text</td></tr><tr><td><code>number(x)</code></td><td>turn text or a boolean into a number</td></tr><tr><td><code>whole(x)</code></td><td>turn a value into a whole number, cutting towards zero</td></tr><tr><td><code>type(x)</code></td><td>the name of a value's kind, as text</td></tr><tr><td><code>push(list, value)</code></td><td>add a value to the end of a list</td></tr><tr><td><code>pop(list)</code></td><td>take the last value off a list and give it back</td></tr></tbody></table>
+<pre class="code"><code data-lang="chopcap">say len(&quot;chopcap&quot;), len([1, 2])     # 7 2
+say text(42) + &quot;!&quot;                  # 42!
+say number(&quot;3.5&quot;) + 1               # 4.5
+say whole(3.9)                      # 3
+say type([1])                       # list</code></pre>
+<h3 id="math">math</h3>
+<pre class="code"><code data-lang="chopcap">use math</code></pre>
+<table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody><tr><td><code>math.pi</code>, <code>math.e</code></td><td>the constants</td></tr><tr><td><code>math.sqrt(n)</code></td><td>square root</td></tr><tr><td><code>math.abs(n)</code></td><td>distance from zero</td></tr><tr><td><code>math.floor(n)</code></td><td>round down to a whole number</td></tr><tr><td><code>math.ceil(n)</code></td><td>round up to a whole number</td></tr><tr><td><code>math.round(n)</code>, <code>math.round(n, places)</code></td><td>round to the nearest</td></tr><tr><td><code>math.pow(a, b)</code></td><td><code>a</code> to the power of <code>b</code></td></tr><tr><td><code>math.min(a, b, ...)</code>, <code>math.max(a, b, ...)</code></td><td>smallest / largest</td></tr><tr><td><code>math.sin(n)</code>, <code>math.cos(n)</code>, <code>math.tan(n)</code></td><td>trigonometry, in radians</td></tr><tr><td><code>math.log(n)</code>, <code>math.log(n, base)</code></td><td>natural log, or log in any base</td></tr></tbody></table>
+<pre class="code"><code data-lang="chopcap">say math.round(math.pi, 4)      # 3.1416
+say math.log(8, 2)              # 3</code></pre>
+<h3 id="text">text</h3>
+<pre class="code"><code data-lang="chopcap">use text</code></pre>
+<table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody><tr><td><code>text.upper(s)</code> / <code>text.lower(s)</code></td><td>change the case</td></tr><tr><td><code>text.trim(s)</code></td><td>remove spaces from both ends</td></tr><tr><td><code>text.split(s)</code></td><td>split on runs of whitespace</td></tr><tr><td><code>text.split(s, sep)</code></td><td>split on a separator</td></tr><tr><td><code>text.join(list)</code> / <code>text.join(list, sep)</code></td><td>glue a list into text</td></tr><tr><td><code>text.replace(s, from, to)</code></td><td>replace every occurrence</td></tr><tr><td><code>text.contains(s, part)</code></td><td>is it in there?</td></tr><tr><td><code>text.starts(s, part)</code> / <code>text.ends(s, part)</code></td><td>does it start / end with it?</td></tr><tr><td><code>text.find(s, part)</code></td><td>where it starts, or <code>-1</code></td></tr><tr><td><code>text.slice(s, from)</code> / <code>text.slice(s, from, to)</code></td><td>a piece of it</td></tr><tr><td><code>text.repeat(s, times)</code></td><td>repeat it</td></tr><tr><td><code>text.reverse(s)</code></td><td>back to front</td></tr><tr><td><code>text.chars(s)</code></td><td>a list of single characters</td></tr><tr><td><code>text.code(s)</code></td><td>the character code of the first character</td></tr><tr><td><code>text.char(n)</code></td><td>the character with that code</td></tr><tr><td><code>text.length(s)</code></td><td>same as <code>len(s)</code></td></tr></tbody></table>
+<pre class="code"><code data-lang="chopcap">say text.split(&quot;a,b,c&quot;, &quot;,&quot;)        # [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+say text.join([&quot;a&quot;, &quot;b&quot;], &quot;-&quot;)      # a-b
+say text.slice(&quot;chopcap&quot;, 0, 4)     # chop</code></pre>
+<p><code>text.slice</code> clamps its range, so it never fails on a short string.</p>
+<h3 id="lists">lists</h3>
+<pre class="code"><code data-lang="chopcap">use lists</code></pre>
+<p>Makes a new list: <code>sort</code>, <code>reverse</code>, <code>slice</code>, <code>copy</code>.
+Changes the list you pass in: <code>add</code>, <code>insert</code>, <code>remove</code>.</p>
+<table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody><tr><td><code>lists.length(l)</code></td><td>how many items</td></tr><tr><td><code>lists.add(l, value)</code></td><td>add to the end</td></tr><tr><td><code>lists.insert(l, at, value)</code></td><td>insert at a position</td></tr><tr><td><code>lists.remove(l, at)</code></td><td>remove a position and give the value back</td></tr><tr><td><code>lists.contains(l, value)</code></td><td>is it in there?</td></tr><tr><td><code>lists.find(l, value)</code></td><td>its position, or <code>-1</code></td></tr><tr><td><code>lists.copy(l)</code></td><td>a separate copy</td></tr><tr><td><code>lists.reverse(l)</code></td><td>a new list, back to front</td></tr><tr><td><code>lists.slice(l, from)</code> / <code>(l, from, to)</code></td><td>a new list from a range</td></tr><tr><td><code>lists.sort(l)</code></td><td>a new sorted list</td></tr><tr><td><code>lists.sum(l)</code></td><td>add the numbers up</td></tr><tr><td><code>lists.min(l)</code> / <code>lists.max(l)</code></td><td>smallest / largest item</td></tr><tr><td><code>lists.join(l)</code> / <code>lists.join(l, sep)</code></td><td>glue into text</td></tr></tbody></table>
+<p><code>lists.sort</code> needs every item to be the same kind — all numbers or all text.</p>
+<h3 id="random">random</h3>
+<pre class="code"><code data-lang="chopcap">use random</code></pre>
+<table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody><tr><td><code>random.number(low, high)</code></td><td>a whole number, both ends included</td></tr><tr><td><code>random.decimal()</code></td><td>a decimal from 0 up to (not including) 1</td></tr><tr><td><code>random.pick(list)</code></td><td>one item from a list</td></tr><tr><td><code>random.shuffle(list)</code></td><td>a new list in a random order</td></tr><tr><td><code>random.seed(n)</code></td><td>fix the sequence, so runs repeat</td></tr></tbody></table>
+<pre class="code"><code data-lang="chopcap">use random
+say random.number(1, 6)
+say random.pick([&quot;rock&quot;, &quot;paper&quot;, &quot;scissors&quot;])</code></pre>
+<h3 id="files">files</h3>
+<pre class="code"><code data-lang="chopcap">use files</code></pre>
+<table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody><tr><td><code>files.read(path)</code></td><td>the whole file as text</td></tr><tr><td><code>files.lines(path)</code></td><td>the file as a list of lines</td></tr><tr><td><code>files.write(path, text)</code></td><td>write, replacing anything there</td></tr><tr><td><code>files.append(path, text)</code></td><td>add to the end</td></tr><tr><td><code>files.exists(path)</code></td><td>is there a file there?</td></tr><tr><td><code>files.remove(path)</code></td><td>delete it</td></tr></tbody></table>
+<p>Paths are used exactly as given, relative to wherever you ran <code>chopcap</code>.</p>
+<h3 id="time">time</h3>
+<pre class="code"><code data-lang="chopcap">use time</code></pre>
+<table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody><tr><td><code>time.now()</code></td><td>seconds since 1 January 1970</td></tr><tr><td><code>time.clock()</code></td><td>a steadily rising number, for measuring how long something took</td></tr><tr><td><code>time.sleep(seconds)</code></td><td>wait</td></tr><tr><td><code>time.date()</code></td><td>today as <code>&quot;2026-08-16&quot;</code></td></tr><tr><td><code>time.stamp()</code></td><td>now as <code>&quot;2026-08-16 14:05:09&quot;</code></td></tr><tr><td><code>time.year()</code>, <code>time.month()</code>, <code>time.day()</code></td><td>parts of today</td></tr><tr><td><code>time.hour()</code>, <code>time.minute()</code>, <code>time.second()</code></td><td>parts of the time</td></tr></tbody></table>
+<pre class="code"><code data-lang="chopcap">use time
+start = time.clock()
+time.sleep(0.25)
+say &quot;that took&quot;, time.clock() - start, &quot;seconds&quot;</code></pre>
+<h2 id="cli">CLI Reference</h2>
+<pre class="code"><code>chopcap                     start the interactive prompt
+chopcap &lt;file.chop&gt;         run a Chopcap program
+chopcap run &lt;file.chop&gt;     the same thing, spelled out
+chopcap -e &quot;say 1 + 1&quot;      run a line of Chopcap directly
+chopcap repl                start the interactive prompt
+
+  -h, --help                show help
+  -v, --version             show the version</code></pre>
+<h3 id="running-a-program">Running a program</h3>
+<pre class="code"><code>chopcap hello.chop
+chopcap run hello.chop      # identical
+chopcap ./examples/primes.chop</code></pre>
+<p>Files conventionally end in <code>.chop</code>, but any file works.</p>
+<h3 id="running-a-snippet">Running a snippet</h3>
+<pre class="code"><code>chopcap -e 'say &quot;Hello from Chopcap!&quot;'
+chopcap -e 'for i in 1 to 3:
+    say i'</code></pre>
+<h3 id="the-interactive-prompt">The interactive prompt</h3>
+<pre class="code"><code>$ chopcap
+Chopcap 0.1.0
+Type some Chopcap, or `exit` to quit. `help` shows a reminder.
+
+&gt;&gt;&gt; say &quot;hi&quot;
+hi
+&gt;&gt;&gt; 6 * 7
+42</code></pre>
+<ul><li>An expression on its own prints its value; text is shown with quotes so you can tell <code>42</code> from <code>&quot;42&quot;</code>.</li><li>A line ending in <code>:</code> starts a block. Keep typing, and press Enter on a blank line to run it.</li><li>Variables and functions stay defined for the whole session.</li><li><code>help</code> prints a reminder, <code>exit</code> (or <code>quit</code>, or Ctrl-D) leaves.</li><li>Errors are reported and the session carries on.</li></ul>
+<h3 id="reading-from-a-pipe">Reading from a pipe</h3>
+<p>The prompt also works without a terminal, which is handy in scripts:</p>
+<pre class="code"><code>echo 'say 2 + 2' | chopcap
+printf 'x = 5\nx * 2\n' | chopcap</code></pre>
+<h3 id="exit-codes">Exit codes</h3>
+<table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td><code>0</code></td><td>the program ran to the end</td></tr><tr><td><code>64</code></td><td>the command line was wrong</td></tr><tr><td><code>65</code></td><td>the program could not be read as Chopcap</td></tr><tr><td><code>66</code></td><td>the file could not be opened</td></tr><tr><td><code>70</code></td><td>the program stopped with an error while running</td></tr></tbody></table>
+<h2 id="examples">Examples</h2>
+<p>Every program below lives in the <a href="https://github.com/ilikemacos/chopcap/blob/main/examples"><code>examples/</code></a> folder and is run
+as part of the test suite.</p>
+<p>Run one with:</p>
+<pre class="code"><code>chopcap examples/fizzbuzz.chop</code></pre>
+<table><thead><tr><th>File</th><th>What it shows</th></tr></thead><tbody><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/hello.chop"><code>hello.chop</code></a></td><td>the smallest program there is</td></tr><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/greeting.chop"><code>greeting.chop</code></a></td><td><code>ask</code>, defaults, text length</td></tr><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/fizzbuzz.chop"><code>fizzbuzz.chop</code></a></td><td>functions, <code>%</code>, early returns</td></tr><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/temperature.chop"><code>temperature.chop</code></a></td><td>arithmetic and a small table</td></tr><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/shopping.chop"><code>shopping.chop</code></a></td><td>lists, <code>push</code>, the <code>lists</code> module</td></tr><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/words.chop"><code>words.chop</code></a></td><td>splitting text and counting things</td></tr><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/primes.chop"><code>primes.chop</code></a></td><td>nested loops and <code>math</code></td></tr><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/notes.chop"><code>notes.chop</code></a></td><td>reading and writing files</td></tr><tr><td><a href="https://github.com/ilikemacos/chopcap/blob/main/examples/guess.chop"><code>guess.chop</code></a></td><td>a game: input, <code>random</code>, <code>try</code>/<code>catch</code></td></tr></tbody></table>
+<h3 id="hello-world">Hello, world</h3>
+<pre class="code"><code data-lang="chopcap">say &quot;Hello, world!&quot;</code></pre>
+<h3 id="fizzbuzz">FizzBuzz</h3>
+<pre class="code"><code data-lang="chopcap">fun label(n):
+    if n % 15 == 0:
+        return &quot;FizzBuzz&quot;
+    if n % 3 == 0:
+        return &quot;Fizz&quot;
+    if n % 5 == 0:
+        return &quot;Buzz&quot;
+    return text(n)
+
+for i in 1 to 20:
+    say label(i)</code></pre>
+<h3 id="counting-words">Counting words</h3>
+<pre class="code"><code data-lang="chopcap">use text
+use lists
+
+passage = &quot;the quick brown fox jumps over the lazy dog the end&quot;
+words = text.split(passage)
+
+seen = []
+counts = []
+for w in words:
+    at = lists.find(seen, w)
+    if at == -1:
+        push(seen, w)
+        push(counts, 1)
+    else:
+        counts[at] = counts[at] + 1
+
+for i in 0 to len(seen) - 1:
+    if counts[i] &gt; 1:
+        say seen[i], &quot;appears&quot;, counts[i], &quot;times&quot;</code></pre>
+<h3 id="a-guessing-game">A guessing game</h3>
+<pre class="code"><code data-lang="chopcap">use random
+
+secret = random.number(1, 100)
+tries = 0
+
+say &quot;I am thinking of a number between 1 and 100.&quot;
+
+while tries &lt; 7:
+    reply = ask &quot;Your guess? &quot;
+    if reply == nothing:
+        break
+
+    try:
+        guess = whole(reply)
+    catch:
+        say &quot;That was not a number. Try again.&quot;
+        skip
+
+    tries = tries + 1
+    if guess == secret:
+        say &quot;Correct! It took you&quot;, tries, &quot;tries.&quot;
+        break
+    else if guess &lt; secret:
+        say &quot;Higher.&quot;
+    else:
+        say &quot;Lower.&quot;</code></pre>
+<h2 id="specification">Chopcap Language Specification</h2>
+<p>Version 0.1.0. This describes the language as the reference implementation in
+<a href="https://github.com/ilikemacos/chopcap/blob/main/src"><code>src/</code></a> actually behaves; where the two disagree, the implementation
+is the bug.</p>
+<h3 id="1-source-text">1. Source text</h3>
+<p>A program is UTF-8 text. Only ASCII is given meaning by the language itself;
+other bytes pass through inside text values untouched.</p>
+<p>Line endings may be <code>\n</code> or <code>\r\n</code>. A <code>#</code> begins a comment that runs to the
+end of the line. <code>#</code> inside a text value is an ordinary character.</p>
+<h3 id="2-lines-and-blocks">2. Lines and blocks</h3>
+<p>A logical line ends at a newline, unless a bracket (<code>(</code> or <code>[</code>) is still open,
+in which case the line continues.</p>
+<p>Blocks are written by indentation. A statement that opens a block ends with
+<code>:</code>; the statements underneath it are indented further. Every line in a block
+must start at the same column. A tab advances to the next multiple of four
+columns. Blank lines and comment-only lines have no effect on indentation.</p>
+<p>Formally, the lexer emits <code>INDENT</code> when a line's indentation is greater than
+the enclosing block's, and one <code>DEDENT</code> for each block it closes when it is
+smaller. Landing between two open levels is an error.</p>
+<h3 id="3-keywords">3. Keywords</h3>
+<pre class="code"><code>and    as     ask    break  catch  else   error  false  for    fun
+if     in     not    nothing       or     return say    skip   true
+try    use    while</code></pre>
+<p>Keywords may not be used as names.</p>
+<p><code>to</code> and <code>by</code> are contextual: they are recognised only between the parts of a
+counting <code>for</code> header, and are ordinary names anywhere else.</p>
+<h3 id="4-names">4. Names</h3>
+<pre class="code"><code>name := (letter | &quot;_&quot;) (letter | digit | &quot;_&quot;)*</code></pre>
+<p>Names are case sensitive.</p>
+<h3 id="5-literals">5. Literals</h3>
+<table><thead><tr><th>Kind</th><th>Syntax</th><th>Notes</th></tr></thead><tbody><tr><td>number</td><td><code>42</code>, <code>-7</code>, <code>1_000_000</code></td><td>64-bit signed integer; <code>_</code> is ignored</td></tr><tr><td>decimal</td><td><code>3.14</code>, <code>1.5e3</code>, <code>2e-2</code></td><td>IEEE-754 double</td></tr><tr><td>text</td><td><code>&quot;hi&quot;</code>, <code>'hi'</code></td><td>escapes <code>\n \t \r \\ \&quot; \'</code>; must close on the same line</td></tr><tr><td>boolean</td><td><code>true</code>, <code>false</code></td><td></td></tr><tr><td>nothing</td><td><code>nothing</code></td><td></td></tr><tr><td>list</td><td><code>[]</code>, <code>[1, 2, 3]</code></td><td>may span lines</td></tr></tbody></table>
+<p>An unknown escape is an error, so typos are caught rather than silently kept.</p>
+<h3 id="6-types">6. Types</h3>
+<p>Six value types: <code>number</code>, <code>decimal</code>, <code>text</code>, <code>boolean</code>, <code>list</code>, <code>nothing</code>.
+Functions and modules are also values, reported by <code>type()</code> as <code>&quot;function&quot;</code>
+and <code>&quot;module&quot;</code>.</p>
+<p>Lists are references: assigning one to a second name gives two names for the
+same list. Everything else behaves as a value.</p>
+<h3 id="7-expressions">7. Expressions</h3>
+<h4 id="7-1-precedence">7.1 Precedence</h4>
+<p>Loosest first; every level is left-associative except <code>^</code>.</p>
+<table><thead><tr><th>Level</th><th>Operators</th></tr></thead><tbody><tr><td>1</td><td><code>or</code></td></tr><tr><td>2</td><td><code>and</code></td></tr><tr><td>3</td><td><code>==</code> <code>!=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code> <code>in</code></td></tr><tr><td>4</td><td><code>+</code> <code>-</code></td></tr><tr><td>5</td><td><code>*</code> <code>/</code> <code>%</code></td></tr><tr><td>6</td><td>unary <code>-</code>, <code>not</code></td></tr><tr><td>7</td><td><code>^</code> (right-associative, binds tighter than unary minus)</td></tr><tr><td>8</td><td>call <code>f(...)</code>, index <code>x[...]</code>, member <code>m.name</code></td></tr></tbody></table>
+<p>So <code>1 + 2 * 3</code> is <code>7</code>, <code>-2 ^ 2</code> is <code>-4</code>, and <code>2 ^ 3 ^ 2</code> is <code>512</code>.</p>
+<h4 id="7-2-arithmetic">7.2 Arithmetic</h4>
+<p><code>+ - *</code> on two numbers give a number; if either side is a decimal the result
+is a decimal.</p>
+<p><code>/</code> gives a number when both sides are numbers and the division is exact, and
+a decimal otherwise. Dividing by zero is an error.</p>
+<p><code>%</code> is the remainder, following C semantics for negative operands.</p>
+<p><code>^</code> gives a number when both sides are numbers, the exponent is not negative,
+and the result fits exactly; otherwise a decimal.</p>
+<h4 id="7-3-on-other-types">7.3 <code>+</code> on other types</h4>
+<ul><li>If either side is text, both are converted to text and joined.</li><li>Two lists are joined into a new list.</li><li>Anything else is an error.</li></ul>
+<h4 id="7-4-comparison">7.4 Comparison</h4>
+<p><code>==</code> and <code>!=</code> accept any two values. Numbers and decimals compare by value.
+Lists compare item by item. Different kinds are never equal.</p>
+<p><code>&lt; &lt;= &gt; &gt;=</code> accept two numbers or two pieces of text (compared byte by byte).
+Anything else is an error.</p>
+<p><code>in</code> answers whether a value is in a list, or whether one piece of text
+occurs inside another.</p>
+<h4 id="7-5-truth">7.5 Truth</h4>
+<p><code>false</code>, <code>nothing</code>, <code>0</code>, <code>0.0</code>, <code>&quot;&quot;</code> and <code>[]</code> are false. Everything else is
+true. <code>and</code> and <code>or</code> evaluate their right side only when needed and give back
+the value that decided the result. <code>not</code> always gives a boolean.</p>
+<h4 id="7-6-indexing">7.6 Indexing</h4>
+<p><code>x[i]</code> reads position <code>i</code> of a list (giving the item) or of text (giving a
+one-character piece of text). Positions start at <code>0</code>; negative positions count
+back from the end. Out of range is an error.</p>
+<p><code>x[i] = v</code> assigns into a list. Text cannot be changed in place.</p>
+<h4 id="7-7-calls-and-members">7.7 Calls and members</h4>
+<p><code>f(a, b)</code> calls a function with exactly the arguments it declares; a mismatch
+is an error. <code>m.name</code> reads a member of a module.</p>
+<h4 id="7-8-ask">7.8 <code>ask</code></h4>
+<p><code>ask</code> is an expression. <code>ask &quot;prompt&quot;</code> prints the prompt with no newline and
+reads one line from standard input, giving it back as text with the newline
+removed. <code>ask</code> on its own reads without printing anything. At end of input it
+gives <code>nothing</code>.</p>
+<h3 id="8-statements">8. Statements</h3>
+<pre class="code"><code>say expr (&quot;,&quot; expr)*                     print, space separated, newline at the end
+name = expr                              assign
+target[index] = expr                     assign into a list
+expr                                     evaluate and discard
+
+if expr &quot;:&quot; block
+(&quot;else&quot; &quot;if&quot; expr &quot;:&quot; block)*
+(&quot;else&quot; &quot;:&quot; block)?
+
+while expr &quot;:&quot; block
+
+for name &quot;in&quot; expr &quot;:&quot; block             over a list or text
+for name &quot;in&quot; expr &quot;to&quot; expr (&quot;by&quot; expr)? &quot;:&quot; block
+
+fun name &quot;(&quot; params &quot;)&quot; &quot;:&quot; block
+return expr?
+break
+skip
+
+try &quot;:&quot; block catch name? &quot;:&quot; block
+error expr
+
+use modulename (&quot;as&quot; name)?
+use &quot;path.chop&quot; &quot;as&quot; name</code></pre>
+<p><code>for ... to ...</code> includes both ends and counts up in steps of <code>1</code> unless <code>by</code>
+gives another step. A step of <code>0</code> is an error. If the range is empty the body
+does not run.</p>
+<p><code>break</code> and <code>skip</code> apply to the innermost enclosing loop.</p>
+<h3 id="9-scope">9. Scope</h3>
+<p>There is one global scope, plus one scope per function call and one per
+<code>catch</code> block.</p>
+<p>Assignment updates the nearest existing binding of that name in any enclosing
+scope; if there is none, it creates the name in the current scope. Parameters
+are always local. Functions capture the scope they were defined in, so nested
+functions can read and update the variables around them.</p>
+<h3 id="10-modules">10. Modules</h3>
+<p><code>use math</code> evaluates to a module value bound to the name <code>math</code> (or the name
+after <code>as</code>). The built-in modules are <code>math</code>, <code>text</code>, <code>lists</code>, <code>random</code>,
+<code>files</code> and <code>time</code>.</p>
+<p><code>use &quot;file.chop&quot; as name</code> reads that file relative to the file doing the
+loading, runs it once from top to bottom in a scope whose parent is the
+globals, and binds a module holding everything that scope defined. Circular
+loads are detected and reported.</p>
+<h3 id="11-errors">11. Errors</h3>
+<p>Every error carries a line number, the source line, a plain-English message
+and often a hint. Errors are reported on standard error in this shape:</p>
+<pre class="code"><code>Chopcap Error
+
+  file.chop, line 4:
+    say name
+
+  `name` does not exist.
+  Did you mean `username`?</code></pre>
+<p><code>error expr</code> raises an error whose message is <code>expr</code> converted to text.
+<code>try: ... catch name: ...</code> runs the guarded block, and on an error binds the
+message to <code>name</code> as text and runs the catch block. Errors from the lexer and
+parser happen before the program runs and cannot be caught.</p>
+<p>Exit codes: <code>0</code> success, <code>64</code> bad command line, <code>65</code> source could not be
+parsed, <code>66</code> file could not be opened, <code>70</code> error while running.</p>
+<h3 id="12-evaluation-order">12. Evaluation order</h3>
+<p>Left to right, throughout: <code>say</code> arguments, operands, list literals, call
+arguments, and the parts of an indexed assignment. The first error stops the
+program (or the enclosing <code>try</code>).</p>
+<h3 id="limitations">Limitations</h3>
+<p>Known and deliberate for 0.1.0:</p>
+<ul><li><strong>Text is bytes.</strong> <code>len</code>, indexing and <code>text.chars</code> work on bytes, so non-ASCII characters count as more than one. Whole-string operations (joining, comparing, <code>text.replace</code>) are safe with any UTF-8.</li><li><strong>No maps or objects.</strong> Lists are the only container.</li><li><strong>No <code>elif</code> keyword</strong> — <code>else if</code> does the job.</li><li><strong>Reference cycles are not collected.</strong> Values are reference counted; a function that captures the scope that holds it keeps that memory until the program exits. Ordinary programs are unaffected.</li><li><strong>Integers wrap</strong> on overflow rather than growing.</li><li><strong>macOS binaries only</strong> in this release. The source is portable C11 using only POSIX interfaces, so it is expected to build on Linux with <code>make</code>, but 0.1.0 neither ships nor tests non-macOS builds.</li></ul>
+    </article>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-45 32 32)"><rect x="25" y="1" width="14" height="28" rx="7" fill="var(--logo-accent)"/><rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink)"/></g></svg><span>Chopcap</span></a>
+        <p>A very small programming language. Programming without the clutter.</p>
+      </div>
+      <div>
+        <h5>Learn</h5>
+        <ul>
+          <li><a href="/docs.html#getting-started">Getting started</a></li>
+          <li><a href="/docs.html#language-basics">Language basics</a></li>
+          <li><a href="/docs.html#standard-library">Standard library</a></li>
+          <li><a href="/docs.html#specification">Specification</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Use</h5>
+        <ul>
+          <li><a href="/docs.html#installation">Installation</a></li>
+          <li><a href="/docs.html#cli">CLI reference</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="/playground.html">Playground</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Project</h5>
+        <ul>
+          <li><a href="https://github.com/ilikemacos/chopcap" rel="noopener">GitHub</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/releases" rel="noopener">Releases</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/blob/main/CHANGELOG.md" rel="noopener">Changelog</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/blob/main/LICENSE" rel="noopener">MIT License</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Chopcap <code>0.1.0</code> — an early release. MIT licensed.</span>
+      <span>Built with a C compiler and not much else.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/chopcap.js"></script>
+<script src="/assets/site.js"></script>
+</body>
+</html>

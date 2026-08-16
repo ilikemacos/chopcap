@@ -1,0 +1,8 @@
+
+Chopcap Error
+
+  24_err_notcallable.chop, line 2:
+    say x(1)
+
+  number is not a function.
+  Only functions can be called with `(...)`.

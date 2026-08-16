@@ -1,0 +1,17 @@
+# Read and write files.
+use files
+use text
+
+path = "/tmp/chopcap-notes.txt"
+
+files.write(path, "milk\nbread\n")
+files.append(path, "coffee\n")
+
+say "The file now holds:"
+for line in files.lines(path):
+    say "  -", line
+
+say ""
+say "Shouted back:", text.upper(files.read(path))
+files.remove(path)
+say "File still there?", files.exists(path)

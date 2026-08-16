@@ -1,0 +1,5 @@
+number decimal text boolean list nothing
+42 true [1, 2]
+42 3.5 1
+3 -3 7
+3 2

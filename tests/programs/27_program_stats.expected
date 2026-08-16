@@ -1,0 +1,6 @@
+count   6
+lowest  64
+highest 95
+average 80
+sorted  [64, 70, 72, 88, 91, 95]
+passed  [91, 88, 95]

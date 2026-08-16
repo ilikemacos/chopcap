@@ -1,0 +1,4 @@
+use "helpers.chop" as helpers
+say helpers.greeting
+say helpers.double(21)
+say helpers.shout("hey")

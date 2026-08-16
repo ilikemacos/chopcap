@@ -1,0 +1,19 @@
+use lists
+nums = [3, 1, 2]
+say lists.length(nums)
+say lists.sort(nums)
+say nums
+say lists.reverse(nums)
+say lists.sum(nums)
+say lists.min(nums), lists.max(nums)
+say lists.contains(nums, 2), lists.find(nums, 2)
+say lists.slice([1, 2, 3, 4], 1, 3)
+say lists.join(["a", "b"], "+")
+copy = lists.copy(nums)
+lists.add(copy, 99)
+say nums, copy
+lists.insert(copy, 0, "first")
+say copy
+say lists.remove(copy, 0)
+say copy
+say lists.sort(["pear", "apple"])

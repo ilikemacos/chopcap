@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Chopcap">
+  <title>Chopcap</title>
+  <!-- A rounded capsule, chopped clean through on the diagonal. -->
+  <g transform="rotate(-45 32 32)">
+    <rect x="25" y="1"  width="14" height="28" rx="7" fill="var(--logo-accent, #f2542d)"/>
+    <rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink, #14161a)"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+before
+
+Chopcap Error
+
+  17_err_undefined.chop, line 3:
+    say name
+
+  `name` does not exist.
+  Did you mean `username`?

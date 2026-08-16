@@ -1,0 +1,8 @@
+
+Chopcap Error
+
+  23_err_parse.chop, line 1:
+    if true
+
+  expected `:` but found the end of the line.
+  Put a `:` at the end of the `if` line, then indent the lines below it.

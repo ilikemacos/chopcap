@@ -1,0 +1,15 @@
+use text
+say text.upper("chopcap"), text.lower("CHOPCAP")
+say text.trim("   spaced   ") + "|"
+say text.split("a,b,c", ",")
+say text.split("one two  three")
+say text.join(["a", "b", "c"], "-")
+say text.replace("banana", "na", "NA")
+say text.contains("chopcap", "cap"), text.starts("chopcap", "chop"), text.ends("chopcap", "cap")
+say text.find("chopcap", "cap"), text.find("chopcap", "zz")
+say text.slice("chopcap", 0, 4), text.slice("chopcap", 4)
+say text.repeat("ab", 3)
+say text.reverse("chopcap")
+say text.chars("cap")
+say text.code("A"), text.char(66)
+say text.length("chopcap")

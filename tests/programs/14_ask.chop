@@ -1,0 +1,4 @@
+name = ask "What is your name? "
+say "Hello, " + name + "!"
+age = number(ask "How old are you? ")
+say "Next year you will be", age + 1

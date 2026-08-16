@@ -1,0 +1,19 @@
+# Build output
+build/
+*.o
+*.dSYM/
+
+# Release archives
+dist/
+*.tar.gz
+
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Netlify
+.netlify/

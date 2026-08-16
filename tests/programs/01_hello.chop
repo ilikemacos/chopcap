@@ -1,0 +1,4 @@
+# The smallest Chopcap program there is.
+say "Hello, world!"
+say "Chopcap", "says", "hi"
+say

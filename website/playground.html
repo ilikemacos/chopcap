@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playground — Chopcap</title>
+<meta name="description" content="Write and run Chopcap in your browser. No installation needed.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Playground — Chopcap">
+<meta property="og:description" content="Write and run Chopcap in your browser. No installation needed.">
+<meta property="og:type" content="website">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-45 32 32)"><rect x="25" y="1" width="14" height="28" rx="7" fill="var(--logo-accent)"/><rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink)"/></g></svg><span>Chopcap</span><span class="version">0.1.0</span></a>
+    <nav class="site-nav">
+        <a href="/docs.html">Docs</a>
+        <a href="/examples.html" data-optional>Examples</a>
+        <a href="/playground.html" aria-current="page">Playground</a>
+        <a href="https://github.com/ilikemacos/chopcap" rel="noopener" data-optional>GitHub</a>
+        <button class="theme-toggle" type="button">☾</button>
+      </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="pg-head">
+  <h1>Playground</h1>
+  <p>Write Chopcap and run it, right here. Nothing is sent anywhere — this page carries a
+    JavaScript build of Chopcap that runs in your browser, and it is checked against the same
+    test suite as the real <code>chopcap</code> command.</p>
+  <div class="pg-picker">
+    <button class="tab" type="button" data-sample="hello" aria-selected="true">Hello</button>
+    <button class="tab" type="button" data-sample="fizzbuzz">FizzBuzz</button>
+    <button class="tab" type="button" data-sample="lists">Lists</button>
+    <button class="tab" type="button" data-sample="functions">Functions</button>
+    <button class="tab" type="button" data-sample="errors">A friendly error</button>
+    <button class="tab" type="button" data-sample="ask">Asking questions</button>
+  </div>
+</div>
+
+<div class="pg-layout">
+  <div class="pane" id="pg-pane" data-runner data-filename="playground.chop" data-inputs="#pg-inputs">
+    <div class="pane-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span>playground.chop</span>
+      <button class="run" type="button">Run ⌘⏎</button>
+    </div>
+    <textarea class="editor" id="pg-editor" spellcheck="false"># Welcome to Chopcap 0.1.0.
+# Change anything here and press Run.
+
+say "Hello from Chopcap!"
+
+fun greet(who):
+    return "Hello, " + who + "!"
+
+for name in ["Ada", "Grace", "Alan"]:
+    say greet(name)
+</textarea>
+    <pre class="console" id="pg-console"></pre>
+  </div>
+
+  <div class="pg-side">
+    <div>
+      <p class="pg-label">Answers for <code>ask</code> — one per line, used in order.</p>
+      <textarea class="pg-inputs" id="pg-inputs" spellcheck="false" placeholder="Ada&#10;42"></textarea>
+    </div>
+
+    <div class="feature">
+      <h3>What is different here</h3>
+      <p>The playground runs in a browser tab, so two things behave differently from the real
+        command: the <code>files</code> module is not available, and <code>ask</code> takes its
+        answers from the box above instead of the keyboard. Everything else — including the
+        error messages — is the same.</p>
+    </div>
+
+    <div class="feature">
+      <h3>Handy while you are here</h3>
+      <p><strong>⌘⏎</strong> or <strong>Ctrl+Enter</strong> runs the program.
+        <strong>Tab</strong> inserts four spaces, which is the indentation Chopcap blocks
+        expect. Long loops are stopped automatically so a runaway <code>while</code> cannot
+        freeze the page.</p>
+    </div>
+
+    <div class="feature">
+      <h3>Ready for the real thing?</h3>
+      <p>Install it and get the interactive prompt, the <code>files</code> module and real
+        keyboard input:</p>
+      <div class="copyline" style="margin-top:12px">
+        <code>curl -fsSL https://raw.githubusercontent.com/ilikemacos/chopcap/main/install.sh | sh</code>
+        <button class="copy-btn" type="button" data-copy="curl -fsSL https://raw.githubusercontent.com/ilikemacos/chopcap/main/install.sh | sh">Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/plain" id="sample-hello">
+# Welcome to Chopcap 0.1.0.
+# Change anything here and press Run.
+
+say "Hello from Chopcap!"
+
+fun greet(who):
+    return "Hello, " + who + "!"
+
+for name in ["Ada", "Grace", "Alan"]:
+    say greet(name)
+</script>
+
+<script type="text/plain" id="sample-fizzbuzz">
+# Count to 20, but say Fizz, Buzz or FizzBuzz instead of some numbers.
+fun label(n):
+    if n % 15 == 0:
+        return "FizzBuzz"
+    if n % 3 == 0:
+        return "Fizz"
+    if n % 5 == 0:
+        return "Buzz"
+    return text(n)
+
+for i in 1 to 20:
+    say label(i)
+</script>
+
+<script type="text/plain" id="sample-lists">
+use lists
+
+basket = ["bread", "milk", "apples"]
+push(basket, "coffee")
+
+say "Basket:", basket
+say "In order:", lists.sort(basket)
+say "How many:", len(basket)
+say "Got milk?", lists.contains(basket, "milk")
+
+for i in 0 to len(basket) - 1:
+    say text(i + 1) + ". " + basket[i]
+</script>
+
+<script type="text/plain" id="sample-functions">
+fun fact(n):
+    if n <= 1:
+        return 1
+    return n * fact(n - 1)
+
+fun make_counter():
+    count = 0
+    fun step():
+        count = count + 1
+        return count
+    return step
+
+say "6! is", fact(6)
+
+next = make_counter()
+say next(), next(), next()
+</script>
+
+<script type="text/plain" id="sample-errors">
+# Chopcap never shows a stack trace.
+# Run this, then fix the last line and run it again.
+
+username = "theo"
+say "Hello!"
+
+say name
+</script>
+
+<script type="text/plain" id="sample-ask" data-inputs="Ada|41">
+# `ask` takes its answers from the box on the right.
+name = ask "What is your name? "
+say "Hello, " + name + "!"
+
+age = number(ask "How old are you? ")
+say "Next year you will be", age + 1
+
+try:
+    say number("not a number")
+catch problem:
+    say "and that is what an error looks like:", problem
+</script>
+
+</main>
+
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-45 32 32)"><rect x="25" y="1" width="14" height="28" rx="7" fill="var(--logo-accent)"/><rect x="25" y="35" width="14" height="28" rx="7" fill="var(--logo-ink)"/></g></svg><span>Chopcap</span></a>
+        <p>A very small programming language. Programming without the clutter.</p>
+      </div>
+      <div>
+        <h5>Learn</h5>
+        <ul>
+          <li><a href="/docs.html#getting-started">Getting started</a></li>
+          <li><a href="/docs.html#language-basics">Language basics</a></li>
+          <li><a href="/docs.html#standard-library">Standard library</a></li>
+          <li><a href="/docs.html#specification">Specification</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Use</h5>
+        <ul>
+          <li><a href="/docs.html#installation">Installation</a></li>
+          <li><a href="/docs.html#cli">CLI reference</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="/playground.html">Playground</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Project</h5>
+        <ul>
+          <li><a href="https://github.com/ilikemacos/chopcap" rel="noopener">GitHub</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/releases" rel="noopener">Releases</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/blob/main/CHANGELOG.md" rel="noopener">Changelog</a></li>
+          <li><a href="https://github.com/ilikemacos/chopcap/blob/main/LICENSE" rel="noopener">MIT License</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Chopcap <code>0.1.0</code> — an early release. MIT licensed.</span>
+      <span>Built with a C compiler and not much else.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/chopcap.js"></script>
+<script src="/assets/site.js"></script>
+</body>
+</html>

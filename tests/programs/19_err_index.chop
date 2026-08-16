@@ -1,0 +1,2 @@
+things = [1, 2, 3]
+say things[7]

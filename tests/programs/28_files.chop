@@ -1,0 +1,9 @@
+use files
+path = "/tmp/chopcap_test_file.txt"
+files.write(path, "one\ntwo\n")
+say files.exists(path)
+say files.read(path) + "|"
+files.append(path, "three\n")
+say files.lines(path)
+files.remove(path)
+say files.exists(path)
